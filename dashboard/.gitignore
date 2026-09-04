@@ -1,0 +1,16 @@
+node_modules
+.next
+out
+*.log
+.DS_Store
+tsconfig.tsbuildinfo
+
+# Local usage data, credentials-adjacent state, and hand-written private notes.
+# Nothing under here is ever published.
+data/private/
+
+# Your own generated dashboard data. The committed daily-burn.json is a synthetic
+# sample so a fresh clone builds and renders; running `npm run data` overwrites it
+# with your real numbers, which should not be pushed back.
+# Delete this line if you intend to publish your own figures.
+data/daily-burn.json

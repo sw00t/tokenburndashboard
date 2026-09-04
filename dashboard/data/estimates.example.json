@@ -1,0 +1,41 @@
+{
+  "_readme": [
+    "Copy to estimates.json. PRIVATE: this file never ships - data/private/ is gitignored.",
+    "build-rows.mjs merges it with exact-daily.json and console-daily.json into data/daily-burn.json.",
+    "Only evidence_public strings are copied to the public file; evidence_private stays here.",
+    "Leave a chat source disabled until you have actually estimated it."
+  ],
+  "timezone": "UTC",
+  "sources": {
+    "claude_chat": {
+      "include": false,
+      "method": "Describe how you arrived at the number, and when.",
+      "per_active_day": 0,
+      "per_idle_day": 0,
+      "range": [0, 0]
+    },
+    "chatgpt": {
+      "include": false,
+      "method": "Describe how you arrived at the number, and when.",
+      "per_active_day": 0,
+      "per_idle_day": 0,
+      "range": [0, 0]
+    }
+  },
+  "defaultDriver": "unlabeled",
+  "driverRules": [
+    {
+      "from": "2026-01-06",
+      "to": "2026-01-10",
+      "driver": "shipping",
+      "evidence_public": "generic, shareable description of the work",
+      "evidence_private": "the detail you do not want published"
+    }
+  ],
+  "days": {
+    "2026-01-13": {
+      "driver_split": { "shipping": 0.6, "research": 0.4 },
+      "evidence_public": "a day split across two kinds of work"
+    }
+  }
+}

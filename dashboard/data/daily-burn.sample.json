@@ -1,0 +1,743 @@
+[
+ { "date": "2026-01-07", "codex_tokens": 208400, "claude_code_tokens": 359307, "claude_code_calls": 11, "claude_chat_est": 60000, "chatgpt_est": 60000, "console_tokens": 448728, "total": 1136435, "driver": "admin", "evidence": "config tidy-up", "codex_cached": 92256, "claude_code_cached": 236976, "console_cached": 243666, "cost_usd": 0.5, "cost_cached_usd": 0.19, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "estimated", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 95990,
+   "claude-opus-5": 133949,
+   "claude-haiku-4-5": 38263,
+   "claude-opus-4-7": 180524
+  } },
+ { "date": "2026-01-09", "codex_tokens": 477442, "claude_code_tokens": 611033, "claude_code_calls": 72, "claude_chat_est": 80000, "chatgpt_est": 60000, "console_tokens": 788376, "total": 2016851, "driver": "video", "evidence": "editing a walkthrough", "codex_cached": 145015, "claude_code_cached": 483304, "console_cached": 576745, "cost_usd": 0.47, "cost_cached_usd": 0.27, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 125599,
+   "claude-opus-5": 138161,
+   "claude-haiku-4-5": 476089,
+   "claude-opus-4-7": 48526
+  } },
+ { "date": "2026-01-12", "codex_tokens": 318741, "claude_code_tokens": 804449, "claude_code_calls": 53, "claude_chat_est": 60000, "chatgpt_est": 60000, "console_tokens": 621196, "total": 1864386, "driver": "research", "evidence": "reading vendor docs", "codex_cached": 134457, "claude_code_cached": 622589, "console_cached": 406847, "cost_usd": 0.43, "cost_cached_usd": 0.15, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 201985,
+   "claude-opus-5": 128552,
+   "claude-haiku-4-5": 115295,
+   "claude-opus-4-7": 175362
+  } },
+ { "date": "2026-01-13", "codex_tokens": 294099, "claude_code_tokens": 988016, "claude_code_calls": 82, "claude_chat_est": 60000, "chatgpt_est": 60000, "console_tokens": 556541, "total": 1958656, "driver": "shipping", "evidence": "prototype iteration", "codex_cached": 104704, "claude_code_cached": 797085, "console_cached": 335885, "cost_usd": 0.58, "cost_cached_usd": 0.3, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 130498,
+   "claude-opus-5": 152375,
+   "claude-haiku-4-5": 220649,
+   "claude-opus-4-7": 53017
+  } },
+ { "date": "2026-01-14", "codex_tokens": 46207, "claude_code_tokens": 216629, "claude_code_calls": 51, "claude_chat_est": 0, "chatgpt_est": 60000, "console_tokens": 161706, "total": 484542, "driver": "support", "evidence": "reproducing a defect", "codex_cached": 13862, "claude_code_cached": 159848, "console_cached": 100781, "cost_usd": 0.12, "cost_cached_usd": 0.07, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 16239,
+   "claude-opus-5": 70126,
+   "claude-haiku-4-5": 25612,
+   "claude-opus-4-7": 49727
+  } },
+ { "date": "2026-01-15", "codex_tokens": 210861, "claude_code_tokens": 971609, "claude_code_calls": 19, "claude_chat_est": 80000, "chatgpt_est": 0, "console_tokens": 363992, "total": 1626462, "driver": "shipping", "evidence": "release prep", "codex_cached": 78984, "claude_code_cached": 737467, "console_cached": 276735, "cost_usd": 0.4, "cost_cached_usd": 0.21, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 151559,
+   "claude-opus-5": 133281,
+   "claude-haiku-4-5": 20605,
+   "claude-opus-4-7": 58544
+  } },
+ { "date": "2026-01-16", "codex_tokens": 83584, "claude_code_tokens": 440337, "claude_code_calls": 52, "claude_chat_est": 80000, "chatgpt_est": 30000, "console_tokens": 202244, "total": 836165, "driver": "video", "evidence": "editing a walkthrough", "codex_cached": 45496, "claude_code_cached": 320799, "console_cached": 95421, "cost_usd": 0.24, "cost_cached_usd": 0.14, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "estimated", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 64796,
+   "claude-opus-5": 80195,
+   "claude-haiku-4-5": 15815,
+   "claude-opus-4-7": 41435
+  } },
+ { "date": "2026-01-18", "codex_tokens": 287802, "claude_code_tokens": 505331, "claude_code_calls": 38, "claude_chat_est": 0, "chatgpt_est": 0, "console_tokens": 355671, "total": 1148804, "driver": "research", "evidence": "reading vendor docs", "codex_cached": 88957, "claude_code_cached": 336522, "console_cached": 169672, "cost_usd": 0.51, "cost_cached_usd": 0.24, "billed_claude_code_tokens": 36996, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "none", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 67511,
+   "claude-opus-5": 82969,
+   "claude-haiku-4-5": 198649,
+   "claude-opus-4-7": 6540
+  } },
+ { "date": "2026-01-19", "codex_tokens": 397876, "claude_code_tokens": 1123111, "claude_code_calls": 13, "claude_chat_est": 60000, "chatgpt_est": 60000, "console_tokens": 976265, "total": 2617252, "driver": "video", "evidence": "editing a walkthrough", "codex_cached": 143728, "claude_code_cached": 749302, "console_cached": 542309, "cost_usd": 1.08, "cost_cached_usd": 0.55, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 322149,
+   "claude-opus-5": 276165,
+   "claude-haiku-4-5": 224367,
+   "claude-opus-4-7": 153581
+  } },
+ { "date": "2026-01-20", "codex_tokens": 438576, "claude_code_tokens": 1072822, "claude_code_calls": 8, "claude_chat_est": 40000, "chatgpt_est": 60000, "console_tokens": 696012, "total": 2307410, "driver": "shipping", "evidence": "release prep", "codex_cached": 182982, "claude_code_cached": 647417, "console_cached": 411128, "cost_usd": 0.43, "cost_cached_usd": 0.2, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 365070,
+   "claude-opus-5": 57561,
+   "claude-haiku-4-5": 50535,
+   "claude-opus-4-7": 222844
+  } },
+ { "date": "2026-01-21", "codex_tokens": 390940, "claude_code_tokens": 849359, "claude_code_calls": 31, "claude_chat_est": 60000, "chatgpt_est": 0, "console_tokens": 288803, "total": 1589102, "driver": "review", "evidence": "prototype iteration", "codex_cached": 207815, "claude_code_cached": 517538, "console_cached": 217772, "cost_usd": 0.24, "cost_cached_usd": 0.1, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 90908,
+   "claude-opus-5": 97176,
+   "claude-haiku-4-5": 57058,
+   "claude-opus-4-7": 43659
+  }, "driver_split": {
+   "review": 0.6,
+   "planning": 0.4
+  } },
+ { "date": "2026-01-23", "codex_tokens": 4895, "claude_code_tokens": 603733, "claude_code_calls": 73, "claude_chat_est": 40000, "chatgpt_est": 30000, "console_tokens": 404189, "total": 1082817, "driver": "research", "evidence": "reading vendor docs", "codex_cached": 2526, "claude_code_cached": 457668, "console_cached": 248782, "cost_usd": 0.23, "cost_cached_usd": 0.14, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "estimated", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 9571,
+   "claude-opus-5": 145959,
+   "claude-haiku-4-5": 79140,
+   "claude-opus-4-7": 169517
+  } },
+ { "date": "2026-01-26", "codex_tokens": 53098, "claude_code_tokens": 1011991, "claude_code_calls": 62, "claude_chat_est": 40000, "chatgpt_est": 30000, "console_tokens": 604406, "total": 1739495, "driver": "review", "evidence": "code review pass", "codex_cached": 31333, "claude_code_cached": 851053, "console_cached": 297829, "cost_usd": 0.69, "cost_cached_usd": 0.32, "billed_claude_code_tokens": 127507, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 122475,
+   "claude-opus-5": 194738,
+   "claude-haiku-4-5": 160234,
+   "claude-opus-4-7": 126957
+  } },
+ { "date": "2026-01-27", "codex_tokens": 44745, "claude_code_tokens": 445790, "claude_code_calls": 34, "claude_chat_est": 60000, "chatgpt_est": 60000, "console_tokens": 258369, "total": 868904, "driver": "writing", "evidence": "editing a spec", "codex_cached": 15970, "claude_code_cached": 274532, "console_cached": 137610, "cost_usd": 0.32, "cost_cached_usd": 0.15, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 94939,
+   "claude-opus-5": 32568,
+   "claude-haiku-4-5": 82920,
+   "claude-opus-4-7": 47940
+  } },
+ { "date": "2026-01-28", "codex_tokens": 77403, "claude_code_tokens": 875403, "claude_code_calls": 29, "claude_chat_est": 80000, "chatgpt_est": 30000, "console_tokens": 578835, "total": 1641641, "driver": "review", "evidence": "design review", "codex_cached": 36106, "claude_code_cached": 689343, "console_cached": 432659, "cost_usd": 0.45, "cost_cached_usd": 0.17, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "derived", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 6065,
+   "claude-opus-5": 273103,
+   "claude-haiku-4-5": 195513,
+   "claude-opus-4-7": 104153
+  } },
+ { "date": "2026-01-29", "codex_tokens": 44406, "claude_code_tokens": 803034, "claude_code_calls": 57, "claude_chat_est": 40000, "chatgpt_est": 0, "console_tokens": 237219, "total": 1124659, "driver": "shipping", "evidence": "reading vendor docs", "codex_cached": 23293, "claude_code_cached": 485667, "console_cached": 180948, "cost_usd": 0.3, "cost_cached_usd": 0.12, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 59597,
+   "claude-opus-5": 101765,
+   "claude-haiku-4-5": 19774,
+   "claude-opus-4-7": 56082
+  }, "driver_split": {
+   "shipping": 0.6,
+   "support": 0.4
+  } },
+ { "date": "2026-01-30", "codex_tokens": 277581, "claude_code_tokens": 912014, "claude_code_calls": 56, "claude_chat_est": 0, "chatgpt_est": 0, "console_tokens": 403070, "total": 1592665, "driver": "research", "evidence": "spike on a new approach", "codex_cached": 94770, "claude_code_cached": 570522, "console_cached": 275730, "cost_usd": 0.36, "cost_cached_usd": 0.18, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "none", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 47095,
+   "claude-opus-5": 130778,
+   "claude-haiku-4-5": 162876,
+   "claude-opus-4-7": 62319
+  } },
+ { "date": "2026-02-02", "codex_tokens": 228593, "claude_code_tokens": 491669, "claude_code_calls": 43, "claude_chat_est": 60000, "chatgpt_est": 30000, "console_tokens": 259539, "total": 1069801, "driver": "writing", "evidence": "debugging a reported issue", "codex_cached": 113974, "claude_code_cached": 383821, "console_cached": 125788, "cost_usd": 0.37, "cost_cached_usd": 0.16, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "estimated", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 120104,
+   "claude-opus-5": 61827,
+   "claude-haiku-4-5": 50551,
+   "claude-opus-4-7": 27056
+  }, "driver_split": {
+   "writing": 0.6,
+   "shipping": 0.4
+  } },
+ { "date": "2026-02-03", "codex_tokens": 262379, "claude_code_tokens": 1069857, "claude_code_calls": 49, "claude_chat_est": 40000, "chatgpt_est": 0, "console_tokens": 787359, "total": 2159595, "driver": "shipping", "evidence": "prototype iteration", "codex_cached": 149622, "claude_code_cached": 762275, "console_cached": 537644, "cost_usd": 1.18, "cost_cached_usd": 0.66, "billed_claude_code_tokens": 80565, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 165512,
+   "claude-opus-5": 152747,
+   "claude-haiku-4-5": 260952,
+   "claude-opus-4-7": 208146
+  }, "driver_split": {
+   "shipping": 0.6,
+   "review": 0.4
+  } },
+ { "date": "2026-02-04", "codex_tokens": 51963, "claude_code_tokens": 516902, "claude_code_calls": 30, "claude_chat_est": 0, "chatgpt_est": 0, "console_tokens": 390950, "total": 959815, "driver": "review", "evidence": "audit of an older module", "codex_cached": 29401, "claude_code_cached": 315332, "console_cached": 279138, "cost_usd": 0.28, "cost_cached_usd": 0.11, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "none", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 97938,
+   "claude-opus-5": 134849,
+   "claude-haiku-4-5": 140959,
+   "claude-opus-4-7": 17202
+  } },
+ { "date": "2026-02-05", "codex_tokens": 108539, "claude_code_tokens": 737138, "claude_code_calls": 67, "claude_chat_est": 0, "chatgpt_est": 0, "console_tokens": 187975, "total": 1033652, "driver": "support", "evidence": "reproducing a defect", "codex_cached": 63275, "claude_code_cached": 529901, "console_cached": 118347, "cost_usd": 0.19, "cost_cached_usd": 0.1, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "none", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 32545,
+   "claude-opus-5": 49655,
+   "claude-haiku-4-5": 36806,
+   "claude-opus-4-7": 68967
+  } },
+ { "date": "2026-02-07", "codex_tokens": 124502, "claude_code_tokens": 414635, "claude_code_calls": 79, "claude_chat_est": 0, "chatgpt_est": 60000, "console_tokens": 312627, "total": 911764, "driver": "shipping", "evidence": "release prep", "codex_cached": 46387, "claude_code_cached": 260230, "console_cached": 156449, "cost_usd": 0.32, "cost_cached_usd": 0.15, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "estimated", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 53837,
+   "claude-opus-5": 111036,
+   "claude-haiku-4-5": 141361,
+   "claude-opus-4-7": 6391
+  } },
+ { "date": "2026-02-09", "codex_tokens": 228572, "claude_code_tokens": 1003015, "claude_code_calls": 46, "claude_chat_est": 80000, "chatgpt_est": 30000, "console_tokens": 691309, "total": 2032896, "driver": "research", "evidence": "spike on a new approach", "codex_cached": 99161, "claude_code_cached": 620722, "console_cached": 312099, "cost_usd": 0.95, "cost_cached_usd": 0.56, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 35027,
+   "claude-opus-5": 286827,
+   "claude-haiku-4-5": 161426,
+   "claude-opus-4-7": 208028
+  } },
+ { "date": "2026-02-10", "codex_tokens": 199797, "claude_code_tokens": 638177, "claude_code_calls": 83, "claude_chat_est": 80000, "chatgpt_est": 30000, "console_tokens": 681605, "total": 1629579, "driver": "review", "evidence": "audit of an older module", "codex_cached": 114761, "claude_code_cached": 473202, "console_cached": 451142, "cost_usd": 0.39, "cost_cached_usd": 0.19, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 6677,
+   "claude-opus-5": 13072,
+   "claude-haiku-4-5": 369564,
+   "claude-opus-4-7": 292289
+  } },
+ { "date": "2026-02-12", "codex_tokens": 214715, "claude_code_tokens": 752217, "claude_code_calls": 85, "claude_chat_est": 0, "chatgpt_est": 0, "console_tokens": 560177, "total": 1527109, "driver": "shipping", "evidence": "bug triage and fix", "codex_cached": 122791, "claude_code_cached": 446818, "console_cached": 336352, "cost_usd": 0.57, "cost_cached_usd": 0.32, "billed_claude_code_tokens": 12381, "codex_fidelity": "exact", "claude_code_fidelity": "derived", "chat_fidelity": "none", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 188896,
+   "claude-opus-5": 107163,
+   "claude-haiku-4-5": 119614,
+   "claude-opus-4-7": 144503
+  } },
+ { "date": "2026-02-13", "codex_tokens": 14176, "claude_code_tokens": 260537, "claude_code_calls": 44, "claude_chat_est": 40000, "chatgpt_est": 30000, "console_tokens": 246524, "total": 591237, "driver": "shipping", "evidence": "bug triage and fix", "codex_cached": 5810, "claude_code_cached": 158753, "console_cached": 124853, "cost_usd": 0.36, "cost_cached_usd": 0.15, "billed_claude_code_tokens": 28868, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 74188,
+   "claude-opus-5": 138138,
+   "claude-haiku-4-5": 15918,
+   "claude-opus-4-7": 18279
+  } },
+ { "date": "2026-02-15", "codex_tokens": 205457, "claude_code_tokens": 677264, "claude_code_calls": 52, "claude_chat_est": 60000, "chatgpt_est": 60000, "console_tokens": 243375, "total": 1246096, "driver": "research", "evidence": "reading vendor docs", "codex_cached": 92932, "claude_code_cached": 414688, "console_cached": 121756, "cost_usd": 0.31, "cost_cached_usd": 0.17, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 112686,
+   "claude-opus-5": 31687,
+   "claude-haiku-4-5": 15785,
+   "claude-opus-4-7": 83215
+  } },
+ { "date": "2026-02-16", "codex_tokens": 144460, "claude_code_tokens": 640041, "claude_code_calls": 62, "claude_chat_est": 80000, "chatgpt_est": 60000, "console_tokens": 414124, "total": 1338625, "driver": "shipping", "evidence": "release prep", "codex_cached": 54118, "claude_code_cached": 381840, "console_cached": 202297, "cost_usd": 0.47, "cost_cached_usd": 0.22, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 195986,
+   "claude-opus-5": 41016,
+   "claude-haiku-4-5": 161383,
+   "claude-opus-4-7": 15737
+  } },
+ { "date": "2026-02-17", "codex_tokens": 81133, "claude_code_tokens": 485946, "claude_code_calls": 80, "claude_chat_est": 0, "chatgpt_est": 0, "console_tokens": 277157, "total": 844236, "driver": "review", "evidence": "audit of an older module", "codex_cached": 42862, "claude_code_cached": 402408, "console_cached": 170299, "cost_usd": 0.25, "cost_cached_usd": 0.12, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "none", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 28205,
+   "claude-opus-5": 23801,
+   "claude-haiku-4-5": 101604,
+   "claude-opus-4-7": 123545
+  } },
+ { "date": "2026-02-18", "codex_tokens": 120706, "claude_code_tokens": 268343, "claude_code_calls": 12, "claude_chat_est": 80000, "chatgpt_est": 30000, "console_tokens": 180075, "total": 679124, "driver": "research", "evidence": "comparing library options", "codex_cached": 59435, "claude_code_cached": 154025, "console_cached": 99312, "cost_usd": 0.19, "cost_cached_usd": 0.11, "billed_claude_code_tokens": 32073, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 47670,
+   "claude-opus-5": 62032,
+   "claude-haiku-4-5": 50690,
+   "claude-opus-4-7": 19681
+  } },
+ { "date": "2026-02-19", "codex_tokens": 159059, "claude_code_tokens": 380026, "claude_code_calls": 77, "claude_chat_est": 40000, "chatgpt_est": 0, "console_tokens": 122054, "total": 701139, "driver": "admin", "evidence": "dependency housekeeping", "codex_cached": 61091, "claude_code_cached": 300779, "console_cached": 63640, "cost_usd": 0.14, "cost_cached_usd": 0.06, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 53183,
+   "claude-opus-5": 15335,
+   "claude-haiku-4-5": 9318,
+   "claude-opus-4-7": 44216
+  } },
+ { "date": "2026-02-22", "codex_tokens": 169495, "claude_code_tokens": 287182, "claude_code_calls": 35, "claude_chat_est": 40000, "chatgpt_est": 60000, "console_tokens": 181615, "total": 738292, "driver": "writing", "evidence": "editing a spec", "codex_cached": 57906, "claude_code_cached": 180614, "console_cached": 130075, "cost_usd": 0.27, "cost_cached_usd": 0.17, "billed_claude_code_tokens": 5405, "codex_fidelity": "exact", "claude_code_fidelity": "estimated", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 66949,
+   "claude-opus-5": 15637,
+   "claude-haiku-4-5": 40075,
+   "claude-opus-4-7": 58952
+  } },
+ { "date": "2026-02-23", "codex_tokens": 119671, "claude_code_tokens": 200801, "claude_code_calls": 89, "claude_chat_est": 0, "chatgpt_est": 0, "console_tokens": 145741, "total": 466213, "driver": "review", "evidence": "audit of an older module", "codex_cached": 48739, "claude_code_cached": 138918, "console_cached": 100280, "cost_usd": 0.14, "cost_cached_usd": 0.07, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "none", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 17809,
+   "claude-opus-5": 36833,
+   "claude-haiku-4-5": 42442,
+   "claude-opus-4-7": 48655
+  } },
+ { "date": "2026-02-25", "codex_tokens": 11269, "claude_code_tokens": 228736, "claude_code_calls": 25, "claude_chat_est": 60000, "chatgpt_est": 0, "console_tokens": 81130, "total": 381135, "driver": "planning", "evidence": "estimating a milestone", "codex_cached": 6231, "claude_code_cached": 187088, "console_cached": 53365, "cost_usd": 0.06, "cost_cached_usd": 0.03, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 20149,
+   "claude-opus-5": 25595,
+   "claude-haiku-4-5": 31106,
+   "claude-opus-4-7": 4277
+  } },
+ { "date": "2026-02-26", "codex_tokens": 106882, "claude_code_tokens": 561486, "claude_code_calls": 12, "claude_chat_est": 80000, "chatgpt_est": 0, "console_tokens": 430508, "total": 1178876, "driver": "review", "evidence": "code review pass", "codex_cached": 33921, "claude_code_cached": 398362, "console_cached": 254293, "cost_usd": 0.62, "cost_cached_usd": 0.33, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 206647,
+   "claude-opus-5": 162715,
+   "claude-haiku-4-5": 31071,
+   "claude-opus-4-7": 30073
+  } },
+ { "date": "2026-03-01", "codex_tokens": 162853, "claude_code_tokens": 636298, "claude_code_calls": 52, "claude_chat_est": 0, "chatgpt_est": 30000, "console_tokens": 420067, "total": 1249218, "driver": "review", "evidence": "design review", "codex_cached": 56253, "claude_code_cached": 352857, "console_cached": 240246, "cost_usd": 0.64, "cost_cached_usd": 0.27, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 124449,
+   "claude-opus-5": 63457,
+   "claude-haiku-4-5": 121289,
+   "claude-opus-4-7": 110870
+  } },
+ { "date": "2026-03-02", "codex_tokens": 123700, "claude_code_tokens": 295954, "claude_code_calls": 63, "claude_chat_est": 60000, "chatgpt_est": 60000, "console_tokens": 374292, "total": 913946, "driver": "research", "evidence": "comparing library options", "codex_cached": 53593, "claude_code_cached": 244442, "console_cached": 209258, "cost_usd": 0.32, "cost_cached_usd": 0.19, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 117047,
+   "claude-opus-5": 95905,
+   "claude-haiku-4-5": 79695,
+   "claude-opus-4-7": 81642
+  } },
+ { "date": "2026-03-03", "codex_tokens": 213184, "claude_code_tokens": 589455, "claude_code_calls": 55, "claude_chat_est": 80000, "chatgpt_est": 0, "console_tokens": 295815, "total": 1178454, "driver": "shipping", "evidence": "release prep", "codex_cached": 113621, "claude_code_cached": 477293, "console_cached": 178343, "cost_usd": 0.39, "cost_cached_usd": 0.24, "billed_claude_code_tokens": 27414, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 115119,
+   "claude-opus-5": 64091,
+   "claude-haiku-4-5": 10710,
+   "claude-opus-4-7": 105893
+  } },
+ { "date": "2026-03-04", "codex_tokens": 55452, "claude_code_tokens": 189497, "claude_code_calls": 56, "claude_chat_est": 0, "chatgpt_est": 60000, "console_tokens": 223016, "total": 527965, "driver": "research", "evidence": "comparing library options", "codex_cached": 26075, "claude_code_cached": 157548, "console_cached": 123401, "cost_usd": 0.24, "cost_cached_usd": 0.11, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 75303,
+   "claude-opus-5": 60978,
+   "claude-haiku-4-5": 46346,
+   "claude-opus-4-7": 40386
+  } },
+ { "date": "2026-03-05", "codex_tokens": 78190, "claude_code_tokens": 140419, "claude_code_calls": 24, "claude_chat_est": 0, "chatgpt_est": 30000, "console_tokens": 151804, "total": 400413, "driver": "support", "evidence": "debugging a reported issue", "codex_cached": 37162, "claude_code_cached": 108898, "console_cached": 111554, "cost_usd": 0.1, "cost_cached_usd": 0.04, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 33303,
+   "claude-opus-5": 47199,
+   "claude-haiku-4-5": 19515,
+   "claude-opus-4-7": 51784
+  } },
+ { "date": "2026-03-06", "codex_tokens": 126975, "claude_code_tokens": 520495, "claude_code_calls": 69, "claude_chat_est": 40000, "chatgpt_est": 60000, "console_tokens": 157319, "total": 904789, "driver": "research", "evidence": "comparing library options", "codex_cached": 67570, "claude_code_cached": 428735, "console_cached": 115450, "cost_usd": 0.18, "cost_cached_usd": 0.1, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 44118,
+   "claude-opus-5": 56624,
+   "claude-haiku-4-5": 25661,
+   "claude-opus-4-7": 30914
+  } },
+ { "date": "2026-03-08", "codex_tokens": 87342, "claude_code_tokens": 253895, "claude_code_calls": 52, "claude_chat_est": 0, "chatgpt_est": 60000, "console_tokens": 250981, "total": 652218, "driver": "writing", "evidence": "editing a spec", "codex_cached": 39346, "claude_code_cached": 170483, "console_cached": 152913, "cost_usd": 0.39, "cost_cached_usd": 0.24, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 79081,
+   "claude-opus-5": 112480,
+   "claude-haiku-4-5": 54767,
+   "claude-opus-4-7": 4651
+  } },
+ { "date": "2026-03-09", "codex_tokens": 140953, "claude_code_tokens": 538777, "claude_code_calls": 64, "claude_chat_est": 80000, "chatgpt_est": 30000, "console_tokens": 457325, "total": 1247055, "driver": "research", "evidence": "comparing library options", "codex_cached": 56938, "claude_code_cached": 311809, "console_cached": 207894, "cost_usd": 0.68, "cost_cached_usd": 0.34, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 99045,
+   "claude-opus-5": 202681,
+   "claude-haiku-4-5": 147706,
+   "claude-opus-4-7": 7892
+  } },
+ { "date": "2026-03-12", "codex_tokens": 5151316, "claude_code_tokens": 7486112, "claude_code_calls": 45, "claude_chat_est": 60000, "chatgpt_est": 30000, "console_tokens": 8888694, "total": 21616122, "driver": "review", "evidence": "code review pass", "codex_cached": 2055051, "claude_code_cached": 5392122, "console_cached": 6345598, "cost_usd": 6.85, "cost_cached_usd": 2.7, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 2877667,
+   "claude-opus-5": 1595616,
+   "claude-haiku-4-5": 3412596,
+   "claude-opus-4-7": 1002813
+  } },
+ { "date": "2026-03-13", "codex_tokens": 346078, "claude_code_tokens": 574225, "claude_code_calls": 17, "claude_chat_est": 40000, "chatgpt_est": 60000, "console_tokens": 702337, "total": 1722640, "driver": "writing", "evidence": "writing release notes", "codex_cached": 132400, "claude_code_cached": 318379, "console_cached": 509613, "cost_usd": 0.74, "cost_cached_usd": 0.37, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 198846,
+   "claude-opus-5": 201168,
+   "claude-haiku-4-5": 189246,
+   "claude-opus-4-7": 113076
+  } },
+ { "date": "2026-03-16", "codex_tokens": 231827, "claude_code_tokens": 347161, "claude_code_calls": 78, "claude_chat_est": 60000, "chatgpt_est": 60000, "console_tokens": 349290, "total": 1048278, "driver": "research", "evidence": "reading vendor docs", "codex_cached": 102396, "claude_code_cached": 203297, "console_cached": 275545, "cost_usd": 0.31, "cost_cached_usd": 0.13, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "derived", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 58611,
+   "claude-opus-5": 140066,
+   "claude-haiku-4-5": 116678,
+   "claude-opus-4-7": 33934
+  } },
+ { "date": "2026-03-17", "codex_tokens": 137298, "claude_code_tokens": 1281292, "claude_code_calls": 41, "claude_chat_est": 0, "chatgpt_est": 0, "console_tokens": 794584, "total": 2213174, "driver": "shipping", "evidence": "release prep", "codex_cached": 72052, "claude_code_cached": 877926, "console_cached": 411831, "cost_usd": 0.97, "cost_cached_usd": 0.41, "billed_claude_code_tokens": 56150, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "none", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 223760,
+   "claude-opus-5": 55896,
+   "claude-haiku-4-5": 319707,
+   "claude-opus-4-7": 195219
+  } },
+ { "date": "2026-03-18", "codex_tokens": 1068687, "claude_code_tokens": 2759929, "claude_code_calls": 27, "claude_chat_est": 80000, "chatgpt_est": 30000, "console_tokens": 1547695, "total": 5486311, "driver": "shipping", "evidence": "prototype iteration", "codex_cached": 423208, "claude_code_cached": 2244521, "console_cached": 742686, "cost_usd": 1.16, "cost_cached_usd": 0.54, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 634659,
+   "claude-opus-5": 379452,
+   "claude-haiku-4-5": 468564,
+   "claude-opus-4-7": 65019
+  } },
+ { "date": "2026-03-19", "codex_tokens": 177428, "claude_code_tokens": 966651, "claude_code_calls": 16, "claude_chat_est": 40000, "chatgpt_est": 60000, "console_tokens": 341731, "total": 1585810, "driver": "video", "evidence": "editing a walkthrough", "codex_cached": 89636, "claude_code_cached": 575707, "console_cached": 170141, "cost_usd": 0.36, "cost_cached_usd": 0.21, "billed_claude_code_tokens": 114884, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 37948,
+   "claude-opus-5": 105487,
+   "claude-haiku-4-5": 180755,
+   "claude-opus-4-7": 17538
+  } },
+ { "date": "2026-03-23", "codex_tokens": 299367, "claude_code_tokens": 657390, "claude_code_calls": 24, "claude_chat_est": 80000, "chatgpt_est": 60000, "console_tokens": 260308, "total": 1357065, "driver": "support", "evidence": "generating captions", "codex_cached": 123220, "claude_code_cached": 407162, "console_cached": 127457, "cost_usd": 0.27, "cost_cached_usd": 0.14, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 78933,
+   "claude-opus-5": 3520,
+   "claude-haiku-4-5": 74364,
+   "claude-opus-4-7": 103490
+  }, "driver_split": {
+   "support": 0.6,
+   "review": 0.4
+  } },
+ { "date": "2026-03-24", "codex_tokens": 41603, "claude_code_tokens": 412469, "claude_code_calls": 68, "claude_chat_est": 80000, "chatgpt_est": 0, "console_tokens": 316432, "total": 850504, "driver": "writing", "evidence": "drafting documentation", "codex_cached": 21003, "claude_code_cached": 341925, "console_cached": 143521, "cost_usd": 0.37, "cost_cached_usd": 0.14, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 59432,
+   "claude-opus-5": 152511,
+   "claude-haiku-4-5": 64099,
+   "claude-opus-4-7": 40388
+  } },
+ { "date": "2026-03-25", "codex_tokens": 78030, "claude_code_tokens": 146963, "claude_code_calls": 86, "claude_chat_est": 80000, "chatgpt_est": 30000, "console_tokens": 143709, "total": 478702, "driver": "admin", "evidence": "dependency housekeeping", "codex_cached": 33882, "claude_code_cached": 113527, "console_cached": 93952, "cost_usd": 0.22, "cost_cached_usd": 0.09, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 51804,
+   "claude-opus-5": 6845,
+   "claude-haiku-4-5": 72044,
+   "claude-opus-4-7": 13015
+  } },
+ { "date": "2026-03-26", "codex_tokens": 77434, "claude_code_tokens": 554282, "claude_code_calls": 12, "claude_chat_est": 0, "chatgpt_est": 60000, "console_tokens": 374611, "total": 1066327, "driver": "support", "evidence": "reproducing a defect", "codex_cached": 33754, "claude_code_cached": 417467, "console_cached": 220631, "cost_usd": 0.55, "cost_cached_usd": 0.22, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 25802,
+   "claude-opus-5": 193831,
+   "claude-haiku-4-5": 85246,
+   "claude-opus-4-7": 69731
+  } },
+ { "date": "2026-03-27", "codex_tokens": 86332, "claude_code_tokens": 271833, "claude_code_calls": 87, "claude_chat_est": 60000, "chatgpt_est": 60000, "console_tokens": 284489, "total": 762654, "driver": "research", "evidence": "prototype iteration", "codex_cached": 29992, "claude_code_cached": 162951, "console_cached": 197829, "cost_usd": 0.43, "cost_cached_usd": 0.21, "billed_claude_code_tokens": 78833, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 48776,
+   "claude-opus-5": 121596,
+   "claude-haiku-4-5": 107344,
+   "claude-opus-4-7": 6772
+  }, "driver_split": {
+   "research": 0.6,
+   "planning": 0.4
+  } },
+ { "date": "2026-03-28", "codex_tokens": 146049, "claude_code_tokens": 812712, "claude_code_calls": 55, "claude_chat_est": 0, "chatgpt_est": 0, "console_tokens": 692830, "total": 1651591, "driver": "research", "evidence": "comparing library options", "codex_cached": 77148, "claude_code_cached": 635053, "console_cached": 495183, "cost_usd": 0.63, "cost_cached_usd": 0.31, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "none", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 101335,
+   "claude-opus-5": 66986,
+   "claude-haiku-4-5": 68200,
+   "claude-opus-4-7": 456307
+  } },
+ { "date": "2026-03-30", "codex_tokens": 1454797, "claude_code_tokens": 2873588, "claude_code_calls": 34, "claude_chat_est": 80000, "chatgpt_est": 60000, "console_tokens": 3305453, "total": 7773838, "driver": "writing", "evidence": "drafting documentation", "codex_cached": 710515, "claude_code_cached": 2333999, "console_cached": 2376512, "cost_usd": 3.42, "cost_cached_usd": 1.23, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 842972,
+   "claude-opus-5": 1323205,
+   "claude-haiku-4-5": 182278,
+   "claude-opus-4-7": 956996
+  } },
+ { "date": "2026-03-31", "codex_tokens": 406982, "claude_code_tokens": 1595234, "claude_code_calls": 30, "claude_chat_est": 0, "chatgpt_est": 30000, "console_tokens": 810420, "total": 2842636, "driver": "shipping", "evidence": "feature build session", "codex_cached": 194729, "claude_code_cached": 1181628, "console_cached": 385826, "cost_usd": 1.1, "cost_cached_usd": 0.46, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 174640,
+   "claude-opus-5": 266061,
+   "claude-haiku-4-5": 184225,
+   "claude-opus-4-7": 185492
+  } },
+ { "date": "2026-04-01", "codex_tokens": 30441, "claude_code_tokens": 246406, "claude_code_calls": 23, "claude_chat_est": 40000, "chatgpt_est": 60000, "console_tokens": 180041, "total": 556888, "driver": "review", "evidence": "code review pass", "codex_cached": 10141, "claude_code_cached": 202785, "console_cached": 134267, "cost_usd": 0.14, "cost_cached_usd": 0.09, "billed_claude_code_tokens": 38239, "codex_fidelity": "exact", "claude_code_fidelity": "estimated", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 49274,
+   "claude-opus-5": 55527,
+   "claude-haiku-4-5": 31936,
+   "claude-opus-4-7": 43302
+  } },
+ { "date": "2026-04-02", "codex_tokens": 270306, "claude_code_tokens": 608265, "claude_code_calls": 86, "claude_chat_est": 40000, "chatgpt_est": 0, "console_tokens": 548695, "total": 1467266, "driver": "support", "evidence": "debugging a reported issue", "codex_cached": 89858, "claude_code_cached": 405422, "console_cached": 424708, "cost_usd": 0.5, "cost_cached_usd": 0.2, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 82454,
+   "claude-opus-5": 130780,
+   "claude-haiku-4-5": 180744,
+   "claude-opus-4-7": 154715
+  } },
+ { "date": "2026-04-03", "codex_tokens": 21080, "claude_code_tokens": 167945, "claude_code_calls": 58, "claude_chat_est": 80000, "chatgpt_est": 0, "console_tokens": 133482, "total": 402507, "driver": "shipping", "evidence": "release prep", "codex_cached": 11273, "claude_code_cached": 94524, "console_cached": 62084, "cost_usd": 0.14, "cost_cached_usd": 0.09, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 3150,
+   "claude-opus-5": 62421,
+   "claude-haiku-4-5": 12314,
+   "claude-opus-4-7": 55596
+  } },
+ { "date": "2026-04-06", "codex_tokens": 43579, "claude_code_tokens": 594496, "claude_code_calls": 31, "claude_chat_est": 80000, "chatgpt_est": 60000, "console_tokens": 622592, "total": 1400667, "driver": "research", "evidence": "reading vendor docs", "codex_cached": 15349, "claude_code_cached": 380764, "console_cached": 287681, "cost_usd": 0.93, "cost_cached_usd": 0.46, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 112889,
+   "claude-opus-5": 309945,
+   "claude-haiku-4-5": 159493,
+   "claude-opus-4-7": 40262
+  } },
+ { "date": "2026-04-07", "codex_tokens": 26188, "claude_code_tokens": 499132, "claude_code_calls": 9, "claude_chat_est": 80000, "chatgpt_est": 60000, "console_tokens": 283020, "total": 948340, "driver": "support", "evidence": "reproducing a defect", "codex_cached": 12164, "claude_code_cached": 304028, "console_cached": 141906, "cost_usd": 0.23, "cost_cached_usd": 0.13, "billed_claude_code_tokens": 15596, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 120292,
+   "claude-opus-5": 42676,
+   "claude-haiku-4-5": 111492,
+   "claude-opus-4-7": 8558
+  } },
+ { "date": "2026-04-08", "codex_tokens": 79291, "claude_code_tokens": 513215, "claude_code_calls": 46, "claude_chat_est": 60000, "chatgpt_est": 30000, "console_tokens": 203805, "total": 886311, "driver": "support", "evidence": "reproducing a defect", "codex_cached": 41292, "claude_code_cached": 336421, "console_cached": 108788, "cost_usd": 0.25, "cost_cached_usd": 0.1, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 36537,
+   "claude-opus-5": 57837,
+   "claude-haiku-4-5": 27998,
+   "claude-opus-4-7": 81431
+  } },
+ { "date": "2026-04-09", "codex_tokens": 40158, "claude_code_tokens": 563012, "claude_code_calls": 7, "claude_chat_est": 0, "chatgpt_est": 60000, "console_tokens": 409374, "total": 1072544, "driver": "shipping", "evidence": "prototype iteration", "codex_cached": 12833, "claude_code_cached": 310772, "console_cached": 323270, "cost_usd": 0.29, "cost_cached_usd": 0.16, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 72797,
+   "claude-opus-5": 80227,
+   "claude-haiku-4-5": 177154,
+   "claude-opus-4-7": 79194
+  } },
+ { "date": "2026-04-13", "codex_tokens": 113130, "claude_code_tokens": 1153258, "claude_code_calls": 81, "claude_chat_est": 60000, "chatgpt_est": 0, "console_tokens": 544640, "total": 1871028, "driver": "support", "evidence": "reproducing a defect", "codex_cached": 64052, "claude_code_cached": 850938, "console_cached": 415805, "cost_usd": 0.71, "cost_cached_usd": 0.43, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 281279,
+   "claude-opus-5": 92448,
+   "claude-haiku-4-5": 102171,
+   "claude-opus-4-7": 68740
+  } },
+ { "date": "2026-04-14", "codex_tokens": 10089, "claude_code_tokens": 133110, "claude_code_calls": 55, "claude_chat_est": 40000, "chatgpt_est": 60000, "console_tokens": 67623, "total": 310822, "driver": "admin", "evidence": "repo cleanup", "codex_cached": 4877, "claude_code_cached": 112327, "console_cached": 36743, "cost_usd": 0.09, "cost_cached_usd": 0.05, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 12468,
+   "claude-opus-5": 10976,
+   "claude-haiku-4-5": 19640,
+   "claude-opus-4-7": 24538
+  } },
+ { "date": "2026-04-15", "codex_tokens": 249904, "claude_code_tokens": 828511, "claude_code_calls": 31, "claude_chat_est": 40000, "chatgpt_est": 0, "console_tokens": 289417, "total": 1407832, "driver": "video", "evidence": "editing a walkthrough", "codex_cached": 103072, "claude_code_cached": 499924, "console_cached": 200167, "cost_usd": 0.43, "cost_cached_usd": 0.26, "billed_claude_code_tokens": 6921, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 67783,
+   "claude-opus-5": 65090,
+   "claude-haiku-4-5": 63658,
+   "claude-opus-4-7": 92884
+  } },
+ { "date": "2026-04-16", "codex_tokens": 22629, "claude_code_tokens": 160753, "claude_code_calls": 49, "claude_chat_est": 60000, "chatgpt_est": 30000, "console_tokens": 187561, "total": 460943, "driver": "shipping", "evidence": "bug triage and fix", "codex_cached": 8090, "claude_code_cached": 93816, "console_cached": 134748, "cost_usd": 0.24, "cost_cached_usd": 0.09, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 72056,
+   "claude-opus-5": 21065,
+   "claude-haiku-4-5": 74423,
+   "claude-opus-4-7": 20015
+  } },
+ { "date": "2026-04-17", "codex_tokens": 98676, "claude_code_tokens": 772908, "claude_code_calls": 83, "claude_chat_est": 40000, "chatgpt_est": 0, "console_tokens": 406826, "total": 1318410, "driver": "shipping", "evidence": "bug triage and fix", "codex_cached": 46830, "claude_code_cached": 533216, "console_cached": 250616, "cost_usd": 0.48, "cost_cached_usd": 0.27, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 14013,
+   "claude-opus-5": 140455,
+   "claude-haiku-4-5": 97135,
+   "claude-opus-4-7": 155221
+  } },
+ { "date": "2026-04-19", "codex_tokens": 221918, "claude_code_tokens": 328944, "claude_code_calls": 88, "claude_chat_est": 0, "chatgpt_est": 30000, "console_tokens": 278127, "total": 858989, "driver": "shipping", "evidence": "editing a spec", "codex_cached": 73025, "claude_code_cached": 233295, "console_cached": 142923, "cost_usd": 0.3, "cost_cached_usd": 0.14, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 5796,
+   "claude-opus-5": 76796,
+   "claude-haiku-4-5": 30679,
+   "claude-opus-4-7": 164854
+  }, "driver_split": {
+   "shipping": 0.6,
+   "planning": 0.4
+  } },
+ { "date": "2026-04-20", "codex_tokens": 171161, "claude_code_tokens": 523285, "claude_code_calls": 9, "claude_chat_est": 0, "chatgpt_est": 30000, "console_tokens": 334637, "total": 1059083, "driver": "shipping", "evidence": "bug triage and fix", "codex_cached": 77140, "claude_code_cached": 417369, "console_cached": 205889, "cost_usd": 0.24, "cost_cached_usd": 0.14, "billed_claude_code_tokens": 41061, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 95101,
+   "claude-opus-5": 74821,
+   "claude-haiku-4-5": 44107,
+   "claude-opus-4-7": 120605
+  } },
+ { "date": "2026-04-21", "codex_tokens": 21393, "claude_code_tokens": 117519, "claude_code_calls": 58, "claude_chat_est": 40000, "chatgpt_est": 30000, "console_tokens": 79914, "total": 288826, "driver": "shipping", "evidence": "bug triage and fix", "codex_cached": 7228, "claude_code_cached": 67635, "console_cached": 38264, "cost_usd": 0.11, "cost_cached_usd": 0.05, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 17904,
+   "claude-opus-5": 8444,
+   "claude-haiku-4-5": 34250,
+   "claude-opus-4-7": 19314
+  } },
+ { "date": "2026-04-22", "codex_tokens": 288503, "claude_code_tokens": 568095, "claude_code_calls": 89, "claude_chat_est": 0, "chatgpt_est": 0, "console_tokens": 312372, "total": 1168970, "driver": "review", "evidence": "audit of an older module", "codex_cached": 105895, "claude_code_cached": 455041, "console_cached": 157060, "cost_usd": 0.5, "cost_cached_usd": 0.21, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "estimated", "chat_fidelity": "none", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 36841,
+   "claude-opus-5": 133612,
+   "claude-haiku-4-5": 22098,
+   "claude-opus-4-7": 119819
+  } },
+ { "date": "2026-04-23", "codex_tokens": 100151, "claude_code_tokens": 641165, "claude_code_calls": 10, "claude_chat_est": 80000, "chatgpt_est": 0, "console_tokens": 242936, "total": 1064252, "driver": "planning", "evidence": "breaking down a roadmap item", "codex_cached": 60076, "claude_code_cached": 461920, "console_cached": 148167, "cost_usd": 0.23, "cost_cached_usd": 0.09, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 9696,
+   "claude-opus-5": 71070,
+   "claude-haiku-4-5": 49983,
+   "claude-opus-4-7": 112185
+  } },
+ { "date": "2026-04-25", "codex_tokens": 68693, "claude_code_tokens": 576903, "claude_code_calls": 68, "claude_chat_est": 80000, "chatgpt_est": 60000, "console_tokens": 842349, "total": 1627945, "driver": "writing", "evidence": "drafting documentation", "codex_cached": 26016, "claude_code_cached": 357483, "console_cached": 564354, "cost_usd": 1.28, "cost_cached_usd": 0.48, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 343469,
+   "claude-opus-5": 8262,
+   "claude-haiku-4-5": 192846,
+   "claude-opus-4-7": 297771
+  } },
+ { "date": "2026-04-27", "codex_tokens": 121478, "claude_code_tokens": 362060, "claude_code_calls": 85, "claude_chat_est": 40000, "chatgpt_est": 30000, "console_tokens": 81490, "total": 635028, "driver": "admin", "evidence": "config tidy-up", "codex_cached": 65213, "claude_code_cached": 280444, "console_cached": 38871, "cost_usd": 0.05, "cost_cached_usd": 0.03, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 23111,
+   "claude-opus-5": 22992,
+   "claude-haiku-4-5": 3766,
+   "claude-opus-4-7": 31619
+  } },
+ { "date": "2026-04-29", "codex_tokens": 65768, "claude_code_tokens": 638421, "claude_code_calls": 59, "claude_chat_est": 40000, "chatgpt_est": 0, "console_tokens": 248244, "total": 992433, "driver": "shipping", "evidence": "prototype iteration", "codex_cached": 36749, "claude_code_cached": 387804, "console_cached": 125880, "cost_usd": 0.33, "cost_cached_usd": 0.18, "billed_claude_code_tokens": 61229, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 31757,
+   "claude-opus-5": 17939,
+   "claude-haiku-4-5": 35811,
+   "claude-opus-4-7": 162735
+  } },
+ { "date": "2026-04-30", "codex_tokens": 121393, "claude_code_tokens": 1086584, "claude_code_calls": 42, "claude_chat_est": 40000, "chatgpt_est": 30000, "console_tokens": 760628, "total": 2038605, "driver": "shipping", "evidence": "bug triage and fix", "codex_cached": 57613, "claude_code_cached": 693542, "console_cached": 465155, "cost_usd": 0.87, "cost_cached_usd": 0.36, "billed_claude_code_tokens": 177400, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 210949,
+   "claude-opus-5": 178444,
+   "claude-haiku-4-5": 134986,
+   "claude-opus-4-7": 236248
+  } },
+ { "date": "2026-05-01", "codex_tokens": 136143, "claude_code_tokens": 743017, "claude_code_calls": 58, "claude_chat_est": 0, "chatgpt_est": 60000, "console_tokens": 459030, "total": 1398190, "driver": "shipping", "evidence": "release prep", "codex_cached": 48026, "claude_code_cached": 446140, "console_cached": 353222, "cost_usd": 0.67, "cost_cached_usd": 0.34, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 188770,
+   "claude-opus-5": 91670,
+   "claude-haiku-4-5": 157518,
+   "claude-opus-4-7": 21071
+  } },
+ { "date": "2026-05-02", "codex_tokens": 187957, "claude_code_tokens": 507781, "claude_code_calls": 19, "claude_chat_est": 80000, "chatgpt_est": 60000, "console_tokens": 360404, "total": 1196142, "driver": "video", "evidence": "editing a walkthrough", "codex_cached": 77492, "claude_code_cached": 339894, "console_cached": 257325, "cost_usd": 0.56, "cost_cached_usd": 0.33, "billed_claude_code_tokens": 47608, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 4705,
+   "claude-opus-5": 116637,
+   "claude-haiku-4-5": 136406,
+   "claude-opus-4-7": 102653
+  } },
+ { "date": "2026-05-04", "codex_tokens": 3950752, "claude_code_tokens": 12086602, "claude_code_calls": 86, "claude_chat_est": 40000, "chatgpt_est": 30000, "console_tokens": 10440200, "total": 26547554, "driver": "shipping", "evidence": "bug triage and fix", "codex_cached": 1356561, "claude_code_cached": 9297250, "console_cached": 7034768, "cost_usd": 8.13, "cost_cached_usd": 3.79, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 4447101,
+   "claude-opus-5": 4258487,
+   "claude-haiku-4-5": 1636678,
+   "claude-opus-4-7": 97932
+  } },
+ { "date": "2026-05-05", "codex_tokens": 263918, "claude_code_tokens": 677020, "claude_code_calls": 73, "claude_chat_est": 40000, "chatgpt_est": 30000, "console_tokens": 910824, "total": 1921762, "driver": "admin", "evidence": "repo cleanup", "codex_cached": 105225, "claude_code_cached": 372888, "console_cached": 472380, "cost_usd": 0.51, "cost_cached_usd": 0.28, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 313684,
+   "claude-opus-5": 239034,
+   "claude-haiku-4-5": 219017,
+   "claude-opus-4-7": 139087
+  } },
+ { "date": "2026-05-06", "codex_tokens": 36425, "claude_code_tokens": 196856, "claude_code_calls": 72, "claude_chat_est": 80000, "chatgpt_est": 30000, "console_tokens": 77650, "total": 420931, "driver": "shipping", "evidence": "prototype iteration", "codex_cached": 18982, "claude_code_cached": 141598, "console_cached": 56330, "cost_usd": 0.06, "cost_cached_usd": 0.02, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 7677,
+   "claude-opus-5": 32435,
+   "claude-haiku-4-5": 4081,
+   "claude-opus-4-7": 33455
+  } },
+ { "date": "2026-05-07", "codex_tokens": 129899, "claude_code_tokens": 439487, "claude_code_calls": 63, "claude_chat_est": 80000, "chatgpt_est": 30000, "console_tokens": 248561, "total": 927947, "driver": "writing", "evidence": "drafting documentation", "codex_cached": 43175, "claude_code_cached": 327148, "console_cached": 131139, "cost_usd": 0.32, "cost_cached_usd": 0.12, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 46991,
+   "claude-opus-5": 93971,
+   "claude-haiku-4-5": 48405,
+   "claude-opus-4-7": 59192
+  } },
+ { "date": "2026-05-08", "codex_tokens": 322167, "claude_code_tokens": 597232, "claude_code_calls": 41, "claude_chat_est": 40000, "chatgpt_est": 60000, "console_tokens": 576104, "total": 1595503, "driver": "shipping", "evidence": "release prep", "codex_cached": 157382, "claude_code_cached": 422237, "console_cached": 369787, "cost_usd": 0.81, "cost_cached_usd": 0.31, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 43352,
+   "claude-opus-5": 250093,
+   "claude-haiku-4-5": 108002,
+   "claude-opus-4-7": 174655
+  } },
+ { "date": "2026-05-13", "codex_tokens": 116973, "claude_code_tokens": 291012, "claude_code_calls": 42, "claude_chat_est": 80000, "chatgpt_est": 30000, "console_tokens": 225672, "total": 743657, "driver": "shipping", "evidence": "prototype iteration", "codex_cached": 40810, "claude_code_cached": 172263, "console_cached": 142621, "cost_usd": 0.27, "cost_cached_usd": 0.14, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 81228,
+   "claude-opus-5": 77610,
+   "claude-haiku-4-5": 49570,
+   "claude-opus-4-7": 17262
+  } },
+ { "date": "2026-05-14", "codex_tokens": 122057, "claude_code_tokens": 567857, "claude_code_calls": 23, "claude_chat_est": 0, "chatgpt_est": 30000, "console_tokens": 778160, "total": 1498074, "driver": "support", "evidence": "reproducing a defect", "codex_cached": 61080, "claude_code_cached": 341608, "console_cached": 492030, "cost_usd": 0.97, "cost_cached_usd": 0.43, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 54401,
+   "claude-opus-5": 323646,
+   "claude-haiku-4-5": 147233,
+   "claude-opus-4-7": 252879
+  } },
+ { "date": "2026-05-15", "codex_tokens": 37352, "claude_code_tokens": 962189, "claude_code_calls": 74, "claude_chat_est": 80000, "chatgpt_est": 0, "console_tokens": 312867, "total": 1392408, "driver": "writing", "evidence": "drafting documentation", "codex_cached": 20747, "claude_code_cached": 568490, "console_cached": 201929, "cost_usd": 0.37, "cost_cached_usd": 0.14, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 93084,
+   "claude-opus-5": 103820,
+   "claude-haiku-4-5": 32704,
+   "claude-opus-4-7": 83257
+  } },
+ { "date": "2026-05-18", "codex_tokens": 2914, "claude_code_tokens": 945744, "claude_code_calls": 25, "claude_chat_est": 80000, "chatgpt_est": 30000, "console_tokens": 538666, "total": 1597324, "driver": "review", "evidence": "code review pass", "codex_cached": 1341, "claude_code_cached": 663379, "console_cached": 275640, "cost_usd": 0.73, "cost_cached_usd": 0.44, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 116101,
+   "claude-opus-5": 142575,
+   "claude-haiku-4-5": 171909,
+   "claude-opus-4-7": 108079
+  } },
+ { "date": "2026-05-19", "codex_tokens": 161825, "claude_code_tokens": 328746, "claude_code_calls": 23, "claude_chat_est": 60000, "chatgpt_est": 30000, "console_tokens": 194242, "total": 774813, "driver": "writing", "evidence": "editing a spec", "codex_cached": 64709, "claude_code_cached": 242676, "console_cached": 155058, "cost_usd": 0.31, "cost_cached_usd": 0.14, "billed_claude_code_tokens": 50237, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 50598,
+   "claude-opus-5": 50210,
+   "claude-haiku-4-5": 53244,
+   "claude-opus-4-7": 40188
+  } },
+ { "date": "2026-05-20", "codex_tokens": 68505, "claude_code_tokens": 171062, "claude_code_calls": 73, "claude_chat_est": 40000, "chatgpt_est": 30000, "console_tokens": 50259, "total": 359826, "driver": "research", "evidence": "reading vendor docs", "codex_cached": 34628, "claude_code_cached": 97909, "console_cached": 25444, "cost_usd": 0.04, "cost_cached_usd": 0.02, "billed_claude_code_tokens": 2737, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 13574,
+   "claude-opus-5": 9303,
+   "claude-haiku-4-5": 16832,
+   "claude-opus-4-7": 10548
+  } },
+ { "date": "2026-05-21", "codex_tokens": 195325, "claude_code_tokens": 487740, "claude_code_calls": 53, "claude_chat_est": 80000, "chatgpt_est": 0, "console_tokens": 310982, "total": 1074047, "driver": "support", "evidence": "debugging a reported issue", "codex_cached": 61037, "claude_code_cached": 328457, "console_cached": 207506, "cost_usd": 0.35, "cost_cached_usd": 0.2, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 14807,
+   "claude-opus-5": 203764,
+   "claude-haiku-4-5": 62214,
+   "claude-opus-4-7": 30195
+  } },
+ { "date": "2026-05-22", "codex_tokens": 292676, "claude_code_tokens": 537429, "claude_code_calls": 46, "claude_chat_est": 80000, "chatgpt_est": 0, "console_tokens": 559817, "total": 1469922, "driver": "planning", "evidence": "estimating a milestone", "codex_cached": 146125, "claude_code_cached": 336271, "console_cached": 303268, "cost_usd": 0.32, "cost_cached_usd": 0.16, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 139231,
+   "claude-opus-5": 199316,
+   "claude-haiku-4-5": 132352,
+   "claude-opus-4-7": 88916
+  } },
+ { "date": "2026-05-24", "codex_tokens": 2141335, "claude_code_tokens": 4319739, "claude_code_calls": 63, "claude_chat_est": 80000, "chatgpt_est": 60000, "console_tokens": 4656502, "total": 11257576, "driver": "shipping", "evidence": "bug triage and fix", "codex_cached": 1284524, "claude_code_cached": 3556767, "console_cached": 3293268, "cost_usd": 4.36, "cost_cached_usd": 2.6, "billed_claude_code_tokens": 1185737, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 752415,
+   "claude-opus-5": 1138417,
+   "claude-haiku-4-5": 1588911,
+   "claude-opus-4-7": 1176757
+  } },
+ { "date": "2026-05-25", "codex_tokens": 157810, "claude_code_tokens": 602188, "claude_code_calls": 14, "claude_chat_est": 80000, "chatgpt_est": 60000, "console_tokens": 717157, "total": 1617155, "driver": "admin", "evidence": "config tidy-up", "codex_cached": 52443, "claude_code_cached": 395698, "console_cached": 402064, "cost_usd": 0.88, "cost_cached_usd": 0.36, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 21476,
+   "claude-opus-5": 290032,
+   "claude-haiku-4-5": 269595,
+   "claude-opus-4-7": 136053
+  } },
+ { "date": "2026-05-26", "codex_tokens": 246983, "claude_code_tokens": 646590, "claude_code_calls": 62, "claude_chat_est": 40000, "chatgpt_est": 60000, "console_tokens": 872154, "total": 1865727, "driver": "planning", "evidence": "estimating a milestone", "codex_cached": 81731, "claude_code_cached": 501462, "console_cached": 531749, "cost_usd": 0.84, "cost_cached_usd": 0.32, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 276719,
+   "claude-opus-5": 415172,
+   "claude-haiku-4-5": 143259,
+   "claude-opus-4-7": 37003
+  } },
+ { "date": "2026-05-29", "codex_tokens": 282463, "claude_code_tokens": 499429, "claude_code_calls": 41, "claude_chat_est": 80000, "chatgpt_est": 60000, "console_tokens": 825100, "total": 1746992, "driver": "admin", "evidence": "dependency housekeeping", "codex_cached": 115951, "claude_code_cached": 301945, "console_cached": 484196, "cost_usd": 0.53, "cost_cached_usd": 0.31, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "derived", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 13198,
+   "claude-opus-5": 342185,
+   "claude-haiku-4-5": 79983,
+   "claude-opus-4-7": 389732
+  } },
+ { "date": "2026-06-01", "codex_tokens": 59054, "claude_code_tokens": 620647, "claude_code_calls": 40, "claude_chat_est": 0, "chatgpt_est": 30000, "console_tokens": 786281, "total": 1495982, "driver": "research", "evidence": "comparing library options", "codex_cached": 32044, "claude_code_cached": 353317, "console_cached": 504188, "cost_usd": 0.88, "cost_cached_usd": 0.41, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 264839,
+   "claude-opus-5": 244711,
+   "claude-haiku-4-5": 90923,
+   "claude-opus-4-7": 185806
+  } },
+ { "date": "2026-06-02", "codex_tokens": 26245, "claude_code_tokens": 344869, "claude_code_calls": 61, "claude_chat_est": 60000, "chatgpt_est": 0, "console_tokens": 280642, "total": 711756, "driver": "writing", "evidence": "writing release notes", "codex_cached": 8976, "claude_code_cached": 259802, "console_cached": 216673, "cost_usd": 0.36, "cost_cached_usd": 0.13, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 34702,
+   "claude-opus-5": 202779,
+   "claude-haiku-4-5": 17644,
+   "claude-opus-4-7": 25515
+  } },
+ { "date": "2026-06-03", "codex_tokens": 41929, "claude_code_tokens": 348060, "claude_code_calls": 49, "claude_chat_est": 0, "chatgpt_est": 60000, "console_tokens": 152736, "total": 602725, "driver": "support", "evidence": "reproducing a defect", "codex_cached": 22619, "claude_code_cached": 270881, "console_cached": 76224, "cost_usd": 0.11, "cost_cached_usd": 0.04, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 73795,
+   "claude-opus-5": 26078,
+   "claude-haiku-4-5": 28324,
+   "claude-opus-4-7": 24537
+  } },
+ { "date": "2026-06-04", "codex_tokens": 8663, "claude_code_tokens": 153812, "claude_code_calls": 70, "claude_chat_est": 60000, "chatgpt_est": 30000, "console_tokens": 143382, "total": 395857, "driver": "writing", "evidence": "drafting documentation", "codex_cached": 4079, "claude_code_cached": 89443, "console_cached": 87571, "cost_usd": 0.1, "cost_cached_usd": 0.04, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 4696,
+   "claude-opus-5": 43282,
+   "claude-haiku-4-5": 31052,
+   "claude-opus-4-7": 64350
+  } },
+ { "date": "2026-06-05", "codex_tokens": 256756, "claude_code_tokens": 568697, "claude_code_calls": 36, "claude_chat_est": 0, "chatgpt_est": 0, "console_tokens": 306871, "total": 1132324, "driver": "shipping", "evidence": "bug triage and fix", "codex_cached": 130353, "claude_code_cached": 441255, "console_cached": 215026, "cost_usd": 0.38, "cost_cached_usd": 0.21, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "none", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 120336,
+   "claude-opus-5": 101297,
+   "claude-haiku-4-5": 6565,
+   "claude-opus-4-7": 78670
+  } },
+ { "date": "2026-06-09", "codex_tokens": 29127, "claude_code_tokens": 104743, "claude_code_calls": 62, "claude_chat_est": 80000, "chatgpt_est": 0, "console_tokens": 30274, "total": 244144, "driver": "admin", "evidence": "dependency housekeeping", "codex_cached": 15992, "claude_code_cached": 71945, "console_cached": 13735, "cost_usd": 0.04, "cost_cached_usd": 0.02, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "derived", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 7267,
+   "claude-opus-5": 9840,
+   "claude-haiku-4-5": 3129,
+   "claude-opus-4-7": 10037
+  } },
+ { "date": "2026-06-10", "codex_tokens": 204292, "claude_code_tokens": 756899, "claude_code_calls": 9, "claude_chat_est": 0, "chatgpt_est": 60000, "console_tokens": 455246, "total": 1476437, "driver": "planning", "evidence": "estimating a milestone", "codex_cached": 113667, "claude_code_cached": 511601, "console_cached": 340268, "cost_usd": 0.34, "cost_cached_usd": 0.19, "billed_claude_code_tokens": 131252, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 168656,
+   "claude-opus-5": 86387,
+   "claude-haiku-4-5": 32287,
+   "claude-opus-4-7": 167915
+  } },
+ { "date": "2026-06-11", "codex_tokens": 324497, "claude_code_tokens": 5041132, "claude_code_calls": 87, "claude_chat_est": 0, "chatgpt_est": 30000, "console_tokens": 3733748, "total": 9129377, "driver": "research", "evidence": "reading vendor docs", "codex_cached": 148862, "claude_code_cached": 4281641, "console_cached": 1844566, "cost_usd": 3.92, "cost_cached_usd": 2.14, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 1327693,
+   "claude-opus-5": 428266,
+   "claude-haiku-4-5": 1710412,
+   "claude-opus-4-7": 267374
+  } },
+ { "date": "2026-06-12", "codex_tokens": 175785, "claude_code_tokens": 1082929, "claude_code_calls": 23, "claude_chat_est": 60000, "chatgpt_est": 30000, "console_tokens": 635701, "total": 1984415, "driver": "planning", "evidence": "estimating a milestone", "codex_cached": 63395, "claude_code_cached": 619193, "console_cached": 462169, "cost_usd": 0.37, "cost_cached_usd": 0.23, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 242607,
+   "claude-opus-5": 132356,
+   "claude-haiku-4-5": 66840,
+   "claude-opus-4-7": 193895
+  } },
+ { "date": "2026-06-14", "codex_tokens": 487540, "claude_code_tokens": 602171, "claude_code_calls": 49, "claude_chat_est": 40000, "chatgpt_est": 30000, "console_tokens": 470291, "total": 1630002, "driver": "writing", "evidence": "editing a spec", "codex_cached": 190316, "claude_code_cached": 379489, "console_cached": 219566, "cost_usd": 0.53, "cost_cached_usd": 0.24, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 97675,
+   "claude-opus-5": 160525,
+   "claude-haiku-4-5": 111643,
+   "claude-opus-4-7": 100447
+  } },
+ { "date": "2026-06-15", "codex_tokens": 184457, "claude_code_tokens": 413732, "claude_code_calls": 34, "claude_chat_est": 0, "chatgpt_est": 60000, "console_tokens": 352723, "total": 1010912, "driver": "planning", "evidence": "estimating a milestone", "codex_cached": 95729, "claude_code_cached": 291616, "console_cached": 201885, "cost_usd": 0.35, "cost_cached_usd": 0.17, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 103332,
+   "claude-opus-5": 112409,
+   "claude-haiku-4-5": 26854,
+   "claude-opus-4-7": 110127
+  } },
+ { "date": "2026-06-16", "codex_tokens": 132557, "claude_code_tokens": 1246895, "claude_code_calls": 88, "claude_chat_est": 60000, "chatgpt_est": 60000, "console_tokens": 358213, "total": 1857665, "driver": "review", "evidence": "design review", "codex_cached": 70332, "claude_code_cached": 844499, "console_cached": 231936, "cost_usd": 0.3, "cost_cached_usd": 0.14, "billed_claude_code_tokens": 32406, "codex_fidelity": "exact", "claude_code_fidelity": "estimated", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 79996,
+   "claude-opus-5": 16541,
+   "claude-haiku-4-5": 136883,
+   "claude-opus-4-7": 124792
+  } },
+ { "date": "2026-06-19", "codex_tokens": 290951, "claude_code_tokens": 2116652, "claude_code_calls": 15, "claude_chat_est": 40000, "chatgpt_est": 30000, "console_tokens": 1511535, "total": 3989138, "driver": "shipping", "evidence": "bug triage and fix", "codex_cached": 89031, "claude_code_cached": 1335195, "console_cached": 716431, "cost_usd": 1.03, "cost_cached_usd": 0.56, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 596949,
+   "claude-opus-5": 360271,
+   "claude-haiku-4-5": 130505,
+   "claude-opus-4-7": 423808
+  } },
+ { "date": "2026-06-22", "codex_tokens": 258807, "claude_code_tokens": 493355, "claude_code_calls": 35, "claude_chat_est": 40000, "chatgpt_est": 0, "console_tokens": 529521, "total": 1321683, "driver": "research", "evidence": "spike on a new approach", "codex_cached": 128332, "claude_code_cached": 320412, "console_cached": 293155, "cost_usd": 0.61, "cost_cached_usd": 0.23, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 273910,
+   "claude-opus-5": 31898,
+   "claude-haiku-4-5": 191959,
+   "claude-opus-4-7": 31752
+  } },
+ { "date": "2026-06-23", "codex_tokens": 161297, "claude_code_tokens": 524448, "claude_code_calls": 44, "claude_chat_est": 80000, "chatgpt_est": 30000, "console_tokens": 311858, "total": 1107603, "driver": "research", "evidence": "comparing library options", "codex_cached": 50821, "claude_code_cached": 301072, "console_cached": 248964, "cost_usd": 0.35, "cost_cached_usd": 0.16, "billed_claude_code_tokens": 63728, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 87690,
+   "claude-opus-5": 108780,
+   "claude-haiku-4-5": 46462,
+   "claude-opus-4-7": 68925
+  } },
+ { "date": "2026-06-24", "codex_tokens": 210187, "claude_code_tokens": 901091, "claude_code_calls": 65, "claude_chat_est": 80000, "chatgpt_est": 60000, "console_tokens": 611674, "total": 1862952, "driver": "support", "evidence": "debugging a reported issue", "codex_cached": 73147, "claude_code_cached": 683157, "console_cached": 430123, "cost_usd": 0.86, "cost_cached_usd": 0.41, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 7032,
+   "claude-opus-5": 145015,
+   "claude-haiku-4-5": 213684,
+   "claude-opus-4-7": 245941
+  } },
+ { "date": "2026-06-26", "codex_tokens": 19326, "claude_code_tokens": 83702, "claude_code_calls": 25, "claude_chat_est": 40000, "chatgpt_est": 60000, "console_tokens": 56812, "total": 259840, "driver": "planning", "evidence": "estimating a milestone", "codex_cached": 6241, "claude_code_cached": 53044, "console_cached": 41246, "cost_usd": 0.05, "cost_cached_usd": 0.03, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 12640,
+   "claude-opus-5": 21574,
+   "claude-haiku-4-5": 4368,
+   "claude-opus-4-7": 18228
+  } },
+ { "date": "2026-06-29", "codex_tokens": 223139, "claude_code_tokens": 933234, "claude_code_calls": 69, "claude_chat_est": 60000, "chatgpt_est": 60000, "console_tokens": 814162, "total": 2090535, "driver": "planning", "evidence": "breaking down a roadmap item", "codex_cached": 76129, "claude_code_cached": 704883, "console_cached": 378578, "cost_usd": 0.97, "cost_cached_usd": 0.48, "billed_claude_code_tokens": 159148, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 174174,
+   "claude-opus-5": 201121,
+   "claude-haiku-4-5": 265704,
+   "claude-opus-4-7": 173161
+  } },
+ { "date": "2026-06-30", "codex_tokens": 158053, "claude_code_tokens": 601076, "claude_code_calls": 73, "claude_chat_est": 40000, "chatgpt_est": 0, "console_tokens": 544815, "total": 1343944, "driver": "review", "evidence": "audit of an older module", "codex_cached": 72996, "claude_code_cached": 391339, "console_cached": 305761, "cost_usd": 0.42, "cost_cached_usd": 0.25, "billed_claude_code_tokens": 87637, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 99610,
+   "claude-opus-5": 127938,
+   "claude-haiku-4-5": 218057,
+   "claude-opus-4-7": 99207
+  } },
+ { "date": "2026-07-01", "codex_tokens": 175140, "claude_code_tokens": 1333860, "claude_code_calls": 5, "claude_chat_est": 40000, "chatgpt_est": 0, "console_tokens": 484190, "total": 2033190, "driver": "admin", "evidence": "dependency housekeeping", "codex_cached": 89489, "claude_code_cached": 951643, "console_cached": 307471, "cost_usd": 0.43, "cost_cached_usd": 0.22, "billed_claude_code_tokens": 10747, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 211651,
+   "claude-opus-5": 86134,
+   "claude-haiku-4-5": 66787,
+   "claude-opus-4-7": 119616
+  } },
+ { "date": "2026-07-02", "codex_tokens": 260448, "claude_code_tokens": 3380219, "claude_code_calls": 23, "claude_chat_est": 60000, "chatgpt_est": 60000, "console_tokens": 2707413, "total": 6468080, "driver": "review", "evidence": "design review", "codex_cached": 92799, "claude_code_cached": 2581275, "console_cached": 1293039, "cost_usd": 2.94, "cost_cached_usd": 1.59, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 537950,
+   "claude-opus-5": 644287,
+   "claude-haiku-4-5": 1260798,
+   "claude-opus-4-7": 264375
+  } },
+ { "date": "2026-07-03", "codex_tokens": 145963, "claude_code_tokens": 482933, "claude_code_calls": 45, "claude_chat_est": 40000, "chatgpt_est": 60000, "console_tokens": 183005, "total": 911901, "driver": "video", "evidence": "generating captions", "codex_cached": 82301, "claude_code_cached": 319457, "console_cached": 129701, "cost_usd": 0.22, "cost_cached_usd": 0.13, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "estimated", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 31664,
+   "claude-opus-5": 14570,
+   "claude-haiku-4-5": 81884,
+   "claude-opus-4-7": 54885
+  } },
+ { "date": "2026-07-06", "codex_tokens": 175804, "claude_code_tokens": 506130, "claude_code_calls": 82, "claude_chat_est": 0, "chatgpt_est": 0, "console_tokens": 169714, "total": 851648, "driver": "research", "evidence": "comparing library options", "codex_cached": 99992, "claude_code_cached": 418451, "console_cached": 101896, "cost_usd": 0.22, "cost_cached_usd": 0.08, "billed_claude_code_tokens": 0, "codex_fidelity": "exact", "claude_code_fidelity": "exact", "chat_fidelity": "none", "console_fidelity": "billed", "cost_fidelity": "billed", "console_models": {
+   "claude-sonnet-5": 55525,
+   "claude-opus-5": 5020,
+   "claude-haiku-4-5": 76695,
+   "claude-opus-4-7": 32471
+  } }
+]
