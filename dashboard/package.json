@@ -7,12 +7,13 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "data": "node scripts/extract-exact.mjs && node scripts/fetch-console.mjs && node scripts/build-rows.mjs",
-    "data:local": "node scripts/extract-exact.mjs && node scripts/build-rows.mjs",
+    "data": "node scripts/extract-exact.mjs && node scripts/extract-plan-usage.mjs && node scripts/fetch-console.mjs && node scripts/import-openai.mjs; node scripts/build-rows.mjs",
+    "data:local": "node scripts/extract-exact.mjs && node scripts/extract-plan-usage.mjs && node scripts/build-rows.mjs",
     "data:console": "node scripts/fetch-console.mjs && node scripts/build-rows.mjs",
     "data:console:check": "node scripts/fetch-console.mjs --check",
     "data:console:full": "node scripts/fetch-console.mjs --full && node scripts/build-rows.mjs",
-    "data:build": "node scripts/build-rows.mjs"
+    "data:build": "node scripts/build-rows.mjs",
+    "data:openai": "node scripts/import-openai.mjs"
   },
   "dependencies": {
     "next": "^16.0.0",

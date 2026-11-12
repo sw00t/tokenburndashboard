@@ -1181,7 +1181,7 @@ h1 {
 
 .modelRow {
   display: grid;
-  grid-template-columns: minmax(130px, 0.8fr) minmax(0, 1fr) 84px 52px;
+  grid-template-columns: 72px minmax(130px, 0.8fr) minmax(0, 1fr) 84px 52px;
   gap: 12px;
   align-items: center;
   color: var(--soft);
@@ -1219,7 +1219,7 @@ h1 {
   }
 
   .modelRow {
-    grid-template-columns: minmax(110px, 1fr) minmax(0, 1fr) 70px 44px;
+    grid-template-columns: 64px minmax(110px, 1fr) minmax(0, 1fr) 70px 44px;
     gap: 8px;
   }
 
@@ -1466,4 +1466,62 @@ h1 {
 .saveDefault:hover {
   border-color: var(--accent);
   color: var(--accent);
+}
+
+.modelVendor {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.modelLane {
+  margin-left: 8px;
+  color: var(--muted);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
+.modelLane.billed {
+  color: var(--billed);
+}
+
+.modelRow.local .track i,
+.modelRow:has(.modelLane.local) .track i {
+  background: var(--accent);
+}
+
+.sourceSub {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.4;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Reopens setup/auth/warning panels that a pull folded away. */
+.syncDetailsToggle {
+  min-height: 26px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--soft);
+  background: transparent;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.syncDetailsToggle:hover {
+  border-color: var(--billed);
+  color: var(--billed);
 }

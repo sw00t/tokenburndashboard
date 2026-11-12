@@ -74,8 +74,10 @@ for (const file of codexFiles) {
   // total_token_usage is a running counter per session; each token_count event is one
   // API call, so the delta between consecutive events is that call's usage.
   let summed = 0; let finalTotal = 0; let prevTotal = 0; let prevCached = 0;
+  let model = "codex"; // turn_context carries the model in force for the token_count events that follow
   for (const r of jsonLines(file)) {
     if (r.type === "session_meta") session = r.payload?.id || session;
+    if (r.type === "turn_context" && r.payload?.model) model = r.payload.model;
     if (r.type !== "event_msg" || r.payload?.type !== "token_count") continue;
     const total = r.payload.info?.total_token_usage;
     if (!total) continue;
@@ -85,7 +87,7 @@ for (const file of codexFiles) {
     finalTotal = prevTotal;
     if (t <= 0) continue;
     summed += t;
-    addUsage(bucket(localDay(r.timestamp), "codex"), { fresh: t - cached, cached, session, model: "codex" });
+    addUsage(bucket(localDay(r.timestamp), "codex"), { fresh: t - cached, cached, session, model });
   }
   codexSessionCheck.push({ file, summedPerCall: summed, finalTotal, matches: summed === finalTotal });
 }
@@ -177,10 +179,12 @@ const finalize = (b) => ({ total: b.total, fresh: b.fresh, cached: b.cached, cal
 const rows = [];
 for (const [date, d] of days) {
   const cli = finalize(d.cli), cowork = finalize(d.cowork), codex = finalize(d.codex);
+  const models = { ...cli.models };
+  for (const [m, v] of Object.entries(cowork.models)) models[m] = (models[m] || 0) + v;
   rows.push({ date, codex, claude_code: {
     total: cli.total + cowork.total, fresh: cli.fresh + cowork.fresh, cached: cli.cached + cowork.cached,
     calls: cli.calls + cowork.calls, sessions: cli.sessions + cowork.sessions,
-    fidelity: "exact", cli, cowork } });
+    fidelity: "exact", models, cli, cowork } });
 }
 for (const d of derived) {
   const existing = rows.find((r) => r.date === d.date);
