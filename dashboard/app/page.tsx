@@ -803,7 +803,7 @@ export default function TokenBurnDashboard() {
                       <td className="moneyCol">{row.cost_usd > 0 ? formatUsd(row.cost_usd) : "—"}</td>
                     )}
                     <td>{formatTokens(movingAverage7(selectedRows, originalIndex))}</td>
-                    <td>{formatPercent(row.cached, row.exact_tokens)}</td>
+                    <td>{formatPercent(row.cached, row.exact_tokens + row.billed_tokens)}</td>
                     <td>{formatTokens(row.codex_tokens)}</td>
                     <td>{formatTokens(row.claude_code_tokens)}</td>
                     <td>{row.claude_code_calls}</td>

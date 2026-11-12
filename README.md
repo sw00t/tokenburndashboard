@@ -10,8 +10,8 @@ involved never touches the repo.
 
 ![Dashboard preview](preview/dashboard-preview.png)
 
-> The preview and `dashboard/data/daily-burn.sample.json` are synthetic data, so a
-> fresh clone has something to render.
+> The preview and `dashboard/data/daily-burn.sample.json` are fictional, generated
+> data, so a fresh clone has something to render.
 
 ## Quick start
 
@@ -56,6 +56,8 @@ Run from `dashboard/`:
 - **Claude chat, ChatGPT:** estimated, from your own figures in `data/private/estimates.json`.
 
 Days bucket in your system timezone; override with `BURN_TZ`.
+
+**Coming soon:** lanes for local LLMs and Decision models.
 
 ## Docs
 
