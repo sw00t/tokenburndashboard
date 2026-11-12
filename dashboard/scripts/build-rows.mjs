@@ -15,6 +15,10 @@
  *   chat_fidelity                              <- estimated | none
  *   console_tokens, console_cached             <- Console-metered API usage with no local log
  *   console_fidelity                           <- billed | none
+ *   openai_api_tokens, openai_api_cached       <- OpenAI platform export (import-openai.mjs), UTC days
+ *   openai_api_requests, openai_api_usd, openai_api_models, openai_api_fidelity <- billed | none
+ *   codex_models, claude_code_models          <- per-model split of the local (exact) lanes
+ *   claude_plan_5h_pct, claude_plan_7d_pct    <- subscription meter peaks per day (extract-plan-usage.mjs)
  *   cost_usd, cost_cached_usd, cost_fidelity   <- real money, from the cost endpoint
  *   billed_claude_code_tokens                  <- reconciliation only, never summed into total
  */
@@ -25,11 +29,17 @@ const root = process.cwd();
 const exactPath = path.join(root, "data/private/exact-daily.json");
 const estPath = path.join(root, "data/private/estimates.json");
 const consolePath = path.join(root, "data/private/console-daily.json");
+const openaiPath = path.join(root, "data/private/openai-daily.json");
+const planPath = path.join(root, "data/private/plan-usage-daily.json");
 const outPath = path.join(root, "data/daily-burn.json");
 
 const exact = JSON.parse(fs.readFileSync(exactPath, "utf8"));
 const est = fs.existsSync(estPath) ? JSON.parse(fs.readFileSync(estPath, "utf8")) : { sources: {}, days: {} };
 const console_ = fs.existsSync(consolePath) ? JSON.parse(fs.readFileSync(consolePath, "utf8")) : null;
+const openai = fs.existsSync(openaiPath) ? JSON.parse(fs.readFileSync(openaiPath, "utf8")) : null;
+const openaiByDate = new Map((openai?.days || []).map((d) => [d.date, d]));
+const plan = fs.existsSync(planPath) ? JSON.parse(fs.readFileSync(planPath, "utf8")) : null;
+const planByDate = new Map((plan?.days || []).map((d) => [d.date, d]));
 
 const consoleByDate = new Map((console_?.days || []).map((d) => [d.date, d]));
 /**
@@ -45,6 +55,7 @@ const dates = new Set([
   ...exactByDate.keys(),
   ...Object.keys(est.days || {}),
   ...consoleByDate.keys(),
+  ...openaiByDate.keys(),
 ]);
 
 function ruleFor(date) {
@@ -87,6 +98,8 @@ for (const date of [...dates].sort()) {
   const day = est.days?.[date] || {};
   const rule = ruleFor(date);
   const con = consoleByDate.get(date);
+  const oa = openaiByDate.get(date);
+  const pl = planByDate.get(date);
   const codex = ex?.codex?.total || 0;
   const cc = ex?.claude_code?.total || 0;
 
@@ -127,11 +140,18 @@ for (const date of [...dates].sort()) {
   const driverLabel =
     day.driver || rule?.driver || (driverSplit ? dominant(driverSplit) : est.defaultDriver || "unlabeled");
 
-  const active = codex + cc + consoleTokens > 0;
+  // ---- OpenAI API (billed) lane ------------------------------------------
+  // Key-based traffic from the platform export. Independent of Codex (which
+  // runs on the ChatGPT subscription) so there is no overlap to subtract.
+  const openaiTokens = oa?.total || 0;
+  const openaiCached = Math.min(openaiTokens, oa?.cached || 0);
+  const openaiUsd = oa?.cost_usd || 0;
+
+  const active = codex + cc + consoleTokens + openaiTokens > 0;
   const claudeChat = chatEstimate("claude_chat", date, active, day.claude_chat_est);
   const chatgpt = chatEstimate("chatgpt", date, active, day.chatgpt_est);
-  const total = codex + cc + consoleTokens + claudeChat + chatgpt;
-  if (total === 0 && costCents === 0) continue;
+  const total = codex + cc + consoleTokens + openaiTokens + claudeChat + chatgpt;
+  if (total === 0 && costCents === 0 && openaiUsd === 0) continue;
   rows.push({
     date,
     codex_tokens: codex,
@@ -140,6 +160,7 @@ for (const date of [...dates].sort()) {
     claude_chat_est: claudeChat,
     chatgpt_est: chatgpt,
     console_tokens: consoleTokens,
+    openai_api_tokens: openaiTokens,
     total,
     driver: driverLabel,
     ...(driverSplit ? { driver_split: driverSplit } : {}),
@@ -147,6 +168,9 @@ for (const date of [...dates].sort()) {
     codex_cached: ex?.codex?.cached || 0,
     claude_code_cached: ex?.claude_code?.cached || 0,
     console_cached: consoleCached,
+    openai_api_cached: openaiCached,
+    openai_api_requests: oa?.requests || 0,
+    openai_api_usd: openaiUsd,
     cost_usd: round(costCents) / 100,
     cost_cached_usd: round(cachedCostCents) / 100,
     billed_claude_code_tokens: billedClaudeCodeTokens,
@@ -154,6 +178,12 @@ for (const date of [...dates].sort()) {
     claude_code_fidelity: cc ? ex.claude_code.fidelity : "none",
     chat_fidelity: claudeChat + chatgpt > 0 ? "estimated" : "none",
     console_fidelity: consoleTokens ? "billed" : "none",
+    openai_api_fidelity: openaiTokens ? "billed" : "none",
+    // Claude subscription rate-limit meters, peak percent per local day (measured, not tokens).
+    ...(pl ? { claude_plan_5h_pct: pl.five_hour_pct, claude_plan_7d_pct: pl.seven_day_pct } : {}),
+    ...(oa?.models && Object.keys(oa.models).length ? { openai_api_models: oa.models } : {}),
+    ...(ex?.codex?.models && Object.keys(ex.codex.models).length ? { codex_models: ex.codex.models } : {}),
+    ...(ex?.claude_code?.models && Object.keys(ex.claude_code.models).length ? { claude_code_models: ex.claude_code.models } : {}),
     cost_fidelity: costCents ? "billed" : "none",
     ...(Object.keys(consoleModels).length ? { console_models: consoleModels } : {}),
   });
@@ -162,11 +192,16 @@ for (const date of [...dates].sort()) {
 fs.writeFileSync(outPath, JSON.stringify(rows, null, 1).replace(/\n\s+"/g, ' "').replace(/\n\s*}/g, " }") + "\n");
 const sum = (k) => rows.reduce((s, r) => s + r[k], 0);
 console.log(`Wrote data/daily-burn.json: ${rows.length} rows, ${rows[0]?.date} -> ${rows.at(-1)?.date}`);
-console.log(`codex ${sum("codex_tokens").toLocaleString()} | claude_code ${sum("claude_code_tokens").toLocaleString()} | console ${sum("console_tokens").toLocaleString()} | claude_chat_est ${sum("claude_chat_est").toLocaleString()} | chatgpt_est ${sum("chatgpt_est").toLocaleString()} | total ${sum("total").toLocaleString()}`);
+console.log(`codex ${sum("codex_tokens").toLocaleString()} | claude_code ${sum("claude_code_tokens").toLocaleString()} | console ${sum("console_tokens").toLocaleString()} | openai_api ${sum("openai_api_tokens").toLocaleString()} | claude_chat_est ${sum("claude_chat_est").toLocaleString()} | chatgpt_est ${sum("chatgpt_est").toLocaleString()} | total ${sum("total").toLocaleString()}`);
 const fid = {}; for (const r of rows) fid[r.claude_code_fidelity] = (fid[r.claude_code_fidelity] || 0) + 1;
 console.log("claude_code fidelity by day:", fid);
 console.log("drivers:", [...new Set(rows.map((r) => r.driver))].join(", "));
 
+if (openai) {
+  console.log(`openai api: ${openai.days.length} billed day(s), ${sum("openai_api_tokens").toLocaleString()} tokens, $${sum("openai_api_usd").toFixed(4)} (UTC-day buckets from export)`);
+} else {
+  console.log("openai api: no export imported yet (run `npm run data:openai -- <folder>`); lane stays empty.");
+}
 if (!console_) {
   console.log("console: not pulled yet (run `npm run data:console`); billed and cost lanes stay empty.");
 } else if (!console_.configured) {

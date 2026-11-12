@@ -12,6 +12,8 @@ import {
   type SourceKey,
   hasCostData,
   modelTotals,
+  planPeaks,
+  estimateSensitivity,
   normalizeRows,
   reconciliation,
   rowFidelityLabel,
@@ -46,6 +48,7 @@ const allVisible: SourceVisibility = {
   codex_tokens: true,
   claude_code_tokens: true,
   console_tokens: true,
+  openai_api_tokens: true,
   claude_chat_est: true,
   chatgpt_est: true,
 };
@@ -128,6 +131,8 @@ export default function TokenBurnDashboard() {
   const fresh = sumField(selectedRows, "fresh");
   const exactTokens = sumField(selectedRows, "exact_tokens");
   const billedTokens = sumField(selectedRows, "billed_tokens");
+  const openaiTokens = sumSource(selectedRows, "openai_api_tokens");
+  const openaiSpend = sumField(selectedRows, "openai_api_usd");
   const estimatedTokens = sumField(selectedRows, "estimated_tokens");
 
   // Money only appears once the Console has actually billed something.
@@ -137,6 +142,8 @@ export default function TokenBurnDashboard() {
   const spendDays = selectedRows.filter((row) => row.cost_usd > 0).length;
   const recon = useMemo(() => reconciliation(selectedRows), [selectedRows]);
   const models = useMemo(() => modelTotals(selectedRows), [selectedRows]);
+  const plan = useMemo(() => planPeaks(selectedRows), [selectedRows]);
+  const gptSens = useMemo(() => estimateSensitivity(selectedRows, "chatgpt_est"), [selectedRows]);
   const heatMetricEffective: HeatMetric = heatMetric === "cost" && !showCost ? "total" : heatMetric;
   const calls = selectedRows.reduce((sum, row) => sum + row.claude_code_calls, 0);
   const peakDay = selectedRows.reduce(
@@ -452,6 +459,42 @@ export default function TokenBurnDashboard() {
               const value = sumSource(selectedRows, source.key);
               const share = sourceTotal ? Math.round((value / sourceTotal) * 100) : 0;
               const cachedValue = source.cachedKey ? sumField(selectedRows, source.cachedKey) : 0;
+              if (source.key === "claude_chat_est" && plan) {
+                // A measured signal for the subscription stands in for the flat chat estimate.
+                return (
+                  <div key={source.key} className="source">
+                    {showFidelity && <span className="pill exact">measured</span>}
+                    <strong>{plan.sevenDay.pct}%</strong>
+                    <span className="muted">
+                      Claude plan 7-day limit, peak {plan.sevenDay.date}
+                    </span>
+                    <span className="sourceSub">
+                      5-hour peak {plan.fiveHour.pct}% on {plan.fiveHour.date} · latest {plan.latest.pct7d}% / {plan.latest.pct5h}% ·{" "}
+                      {plan.sampledDays} sampled days
+                    </span>
+                    {value > 0 && (
+                      <span className="sourceSub">
+                        chat est. {formatTokens(value)} / {share}% stays in totals
+                      </span>
+                    )}
+                  </div>
+                );
+              }
+              if (source.key === "chatgpt_est" && value > 0) {
+                return (
+                  <div key={source.key} className="source">
+                    {showFidelity && <span className={`pill ${source.fidelity}`}>{source.fidelity}</span>}
+                    <strong>{`\u2264${Math.max(1, Math.round(gptSens.maxShare * 100))}%`}</strong>
+                    <span className="muted">
+                      ChatGPT est. can move the total at most this much
+                    </span>
+                    <span className="sourceSub">
+                      {formatTokens(gptSens.perDay)} x {gptSens.days} active days = {formatTokens(value)} ({share}%) · range{" "}
+                      {formatTokens(gptSens.low)} to {formatTokens(gptSens.high)}
+                    </span>
+                  </div>
+                );
+              }
               return (
                 <div key={source.key} className="source">
                   {showFidelity && <span className={`pill ${source.fidelity}`}>{source.fidelity}</span>}
@@ -514,16 +557,20 @@ export default function TokenBurnDashboard() {
             </div>
             <div className="panelAside">
               <p>
-                Billed lane only — Anthropic&rsquo;s meter attributes tokens to a model, local
-                session logs are not published with one. {models.length} model
-                {models.length === 1 ? "" : "s"} in the selected window.
+                Every lane that names a model: Anthropic&rsquo;s meter, OpenAI&rsquo;s export, Codex
+                session logs, and Claude Code logs. Billed and local rows stay separate.{" "}
+                {models.length} row{models.length === 1 ? "" : "s"} in the selected window.
               </p>
             </div>
           </div>
           <div className="modelGrid">
             {models.map((model) => (
-              <div key={model.model} className="modelRow">
-                <strong title={model.model}>{model.label}</strong>
+              <div key={`${model.lane}:${model.vendor}:${model.model}`} className="modelRow">
+                <small className={`modelVendor ${model.vendor}`}>{model.vendor === "openai" ? "OpenAI" : "Anthropic"}</small>
+                <strong title={`${model.model} (${model.lane === "billed" ? "billed meter" : "local session log"})`}>
+                  {model.label}
+                  <em className={`modelLane ${model.lane}`}>{model.lane}</em>
+                </strong>
                 <span className="track">
                   <i style={{ width: `${Math.max(1, model.share * 100)}%` }} />
                 </span>
@@ -597,7 +644,7 @@ export default function TokenBurnDashboard() {
               <Metric
                 label="Top model"
                 value={peakTopModel.label}
-                note={`${formatTokens(peakTopModel.tokens)} billed`}
+                note={`${formatTokens(peakTopModel.tokens)} billed, ${peakTopModel.vendor === "openai" ? "OpenAI" : "Anthropic"}`}
               />
             )}
             {showFidelity && (
@@ -624,6 +671,13 @@ export default function TokenBurnDashboard() {
             {billedTokens > 0 && (
               <>
                 <li>Console API = the meter, minus traffic a local log already counted.</li>
+                {openaiTokens > 0 && (
+                  <li>
+                    OpenAI API = the platform usage export, API keys only, UTC-day buckets
+                    {openaiSpend > 0 ? ` (${formatUsd(openaiSpend)} in view, kept apart from Anthropic spend)` : ""}.
+                    ChatGPT chat is not in it and stays estimated.
+                  </li>
+                )}
                 <li>Model attribution comes from the meter; local logs ship without one.</li>
               </>
             )}
@@ -728,6 +782,7 @@ export default function TokenBurnDashboard() {
                 <th>Claude Code{showFidelity ? " exact" : ""}</th>
                 <th>Calls</th>
                 {billedTokens > 0 && <th>Console API{showFidelity ? " billed" : ""}</th>}
+                {openaiTokens > 0 && <th>OpenAI API{showFidelity ? " billed" : ""}</th>}
                 <th>Claude chat{showFidelity ? " est." : ""}</th>
                 <th>ChatGPT{showFidelity ? " est." : ""}</th>
                 <th>Driver</th>
@@ -753,6 +808,11 @@ export default function TokenBurnDashboard() {
                     <td>{formatTokens(row.claude_code_tokens)}</td>
                     <td>{row.claude_code_calls}</td>
                     {billedTokens > 0 && <td>{formatTokens(row.console_tokens)}</td>}
+                    {openaiTokens > 0 && (
+                      <td title={row.openai_api_usd ? `${row.openai_api_requests} requests, ${formatUsd(row.openai_api_usd)}` : undefined}>
+                        {formatTokens(row.openai_api_tokens)}
+                      </td>
+                    )}
                     <td>{formatTokens(row.claude_chat_est)}</td>
                     <td>{formatTokens(row.chatgpt_est)}</td>
                     <td>{titleCase(row.driver)}</td>
@@ -914,6 +974,10 @@ function MoneyMetric({ label, value, note }: { label: string; value: string; not
 function ConsoleSyncBar({ sync }: { sync: ReturnType<typeof useConsoleSync> }) {
   const { status, busy, unreachable } = sync;
   const [copied, setCopied] = useState(false);
+  // Pressing Pull now / Backfill folds away any setup, auth, or warning panels so
+  // the bar shows only pull progress and status. They stay folded after the pull
+  // finishes until the user reopens them with "Show details".
+  const [detailsCollapsed, setDetailsCollapsed] = useState(false);
 
   // A paused/exported copy of this page has no server behind it.
   if (unreachable || !status) return null;
@@ -930,6 +994,17 @@ function ConsoleSyncBar({ sync }: { sync: ReturnType<typeof useConsoleSync> }) {
 
   const prog = status.progress;
   const running = busy || status.running;
+
+  const startPull = (full: boolean) => {
+    setDetailsCollapsed(true);
+    sync.pull(full);
+  };
+
+  const showSetup = !status.hasCredential;
+  const showAuth = Boolean(auth);
+  const showWarnings = status.hasCredential && !auth && status.warnings.length > 0;
+  const hasDetails = showSetup || showAuth || showWarnings;
+  const detailsVisible = hasDetails && !running && !detailsCollapsed;
 
   const summary = running
     ? prog && prog.total > 0
@@ -996,7 +1071,7 @@ function ConsoleSyncBar({ sync }: { sync: ReturnType<typeof useConsoleSync> }) {
         <button
           type="button"
           className="syncPull"
-          onClick={() => sync.pull(false)}
+          onClick={() => startPull(false)}
           disabled={running}
           title="Resumes from cached data: fetches only days newer than what is stored, plus a short re-check window for figures the provider is still revising."
         >
@@ -1005,15 +1080,33 @@ function ConsoleSyncBar({ sync }: { sync: ReturnType<typeof useConsoleSync> }) {
         <button
           type="button"
           className="syncBackfill"
-          onClick={() => sync.pull(true)}
+          onClick={() => startPull(true)}
           disabled={running}
           title="Ignore the cache and re-pull the last 180 days. Slow: one request per week of tokens, one per day of Claude Code analytics."
         >
           Backfill 180d
         </button>
+        {hasDetails && !running && detailsCollapsed && (
+          <button
+            type="button"
+            className="syncDetailsToggle"
+            onClick={() => setDetailsCollapsed(false)}
+          >
+            Show details
+          </button>
+        )}
+        {detailsVisible && (
+          <button
+            type="button"
+            className="syncDetailsToggle"
+            onClick={() => setDetailsCollapsed(true)}
+          >
+            Hide details
+          </button>
+        )}
       </div>
 
-      {!status.hasCredential && (
+      {detailsVisible && showSetup && (
         <div className="syncSetup">
           <p>
             {status.notConfiguredReason
@@ -1037,7 +1130,7 @@ function ConsoleSyncBar({ sync }: { sync: ReturnType<typeof useConsoleSync> }) {
         </div>
       )}
 
-      {auth && (
+      {detailsVisible && auth && (
         <div className="syncSetup syncAuthProblem">
           <p>
             <strong>
@@ -1076,7 +1169,7 @@ function ConsoleSyncBar({ sync }: { sync: ReturnType<typeof useConsoleSync> }) {
         </div>
       )}
 
-      {status.hasCredential && !auth && status.warnings.length > 0 && (
+      {detailsVisible && showWarnings && (
         <p className="syncWarn">{status.warnings.join(" · ")}</p>
       )}
     </section>
@@ -1247,13 +1340,15 @@ function applySourceVisibility(rows: BurnRow[], visible: SourceVisibility): Burn
       const codex = visible.codex_tokens ? row.codex_tokens : 0;
       const claudeCode = visible.claude_code_tokens ? row.claude_code_tokens : 0;
       const consoleTokens = visible.console_tokens ? row.console_tokens : 0;
+      const openaiTokens = visible.openai_api_tokens ? row.openai_api_tokens : 0;
       const claudeChat = visible.claude_chat_est ? row.claude_chat_est : 0;
       const chatgpt = visible.chatgpt_est ? row.chatgpt_est : 0;
       const codexCached = visible.codex_tokens ? row.codex_cached : 0;
       const claudeCodeCached = visible.claude_code_tokens ? row.claude_code_cached : 0;
       const consoleCached = visible.console_tokens ? row.console_cached : 0;
-      const cached = codexCached + claudeCodeCached + consoleCached;
-      const total = codex + claudeCode + consoleTokens + claudeChat + chatgpt;
+      const openaiCached = visible.openai_api_tokens ? row.openai_api_cached : 0;
+      const cached = codexCached + claudeCodeCached + consoleCached + openaiCached;
+      const total = codex + claudeCode + consoleTokens + openaiTokens + claudeChat + chatgpt;
       // Money is billed against the Console lane, so it hides with that lane.
       const costUsd = visible.console_tokens ? row.cost_usd : 0;
       return {
@@ -1262,25 +1357,33 @@ function applySourceVisibility(rows: BurnRow[], visible: SourceVisibility): Burn
         claude_code_tokens: claudeCode,
         claude_code_calls: visible.claude_code_tokens ? row.claude_code_calls : 0,
         console_tokens: consoleTokens,
+        openai_api_tokens: openaiTokens,
+        openai_api_requests: visible.openai_api_tokens ? row.openai_api_requests : 0,
+        openai_api_usd: visible.openai_api_tokens ? row.openai_api_usd : 0,
+        openai_api_models: visible.openai_api_tokens ? row.openai_api_models : {},
         claude_chat_est: claudeChat,
         chatgpt_est: chatgpt,
         total,
         codex_cached: codexCached,
         claude_code_cached: claudeCodeCached,
         console_cached: consoleCached,
+        openai_api_cached: openaiCached,
         cached,
         fresh: total - cached,
         exact_tokens: codex + claudeCode,
-        billed_tokens: consoleTokens,
+        billed_tokens: consoleTokens + openaiTokens,
         estimated_tokens: claudeChat + chatgpt,
         cost_usd: costUsd,
         cost_cached_usd: visible.console_tokens ? row.cost_cached_usd : 0,
         console_models: visible.console_tokens ? row.console_models : {},
+        codex_models: visible.codex_tokens ? row.codex_models : {},
+        claude_code_models: visible.claude_code_tokens ? row.claude_code_models : {},
         billed_claude_code_tokens: visible.claude_code_tokens ? row.billed_claude_code_tokens : 0,
         codex_fidelity: codex ? row.codex_fidelity : "none",
         claude_code_fidelity: claudeCode ? row.claude_code_fidelity : "none",
         chat_fidelity: claudeChat + chatgpt ? row.chat_fidelity : "none",
         console_fidelity: consoleTokens ? row.console_fidelity : "none",
+        openai_api_fidelity: openaiTokens ? row.openai_api_fidelity : "none",
         cost_fidelity: costUsd ? row.cost_fidelity : "none",
       };
     })
