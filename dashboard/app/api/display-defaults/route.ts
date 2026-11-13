@@ -23,6 +23,7 @@ const ALLOWED_KEYS = [
   "density",
   "palette",
   "barCollapsed",
+  "compact",
 ] as const;
 
 function isLoopback(request: Request) {
@@ -52,7 +53,7 @@ export async function POST(request: Request) {
     const value = body[key];
     if (key === "palette") {
       if (typeof value === "string" && /^[a-z0-9-]{1,32}$/.test(value)) next[key] = value;
-    } else if (key === "barCollapsed") {
+    } else if (key === "barCollapsed" || key === "compact") {
       if (typeof value === "boolean") next[key] = value;
     } else if (typeof value === "number" && Number.isFinite(value) && value >= 0.2 && value <= 2) {
       next[key] = Math.round(value * 100) / 100;

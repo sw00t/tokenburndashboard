@@ -10,6 +10,12 @@ involved never touches the repo.
 
 ![Dashboard preview](preview/dashboard-preview.png)
 
+<p align="center">
+  <img src="preview/dashboard-preview-mobile.png" width="280" alt="Phone layout: sticky controls, compact figures, and the heatmap as one row per week">
+  &nbsp;
+  <img src="preview/dashboard-preview-mobile-settings.png" width="280" alt="Phone settings sheet: Console sync, appearance, and pause">
+</p>
+
 > The preview and `dashboard/data/daily-burn.sample.json` are fictional, generated
 > data, so a fresh clone has something to render.
 
@@ -30,6 +36,18 @@ npm run data                                                  # extract, fetch, 
 
 `npm run data` writes `data/daily-burn.json`, which is gitignored so your real
 figures can't be committed by accident.
+
+## Layout
+
+- **Desktop:** the title row carries an **i** button (what the numbers mean and how much to
+  trust each label) and **Pause**. Range, sources, and fidelity toggles sit in one or two thin
+  rows, and Appearance starts collapsed, so the figures and charts are in view on load.
+- **Phone (600px and below):** range, Sources, **i**, and a settings button stay pinned while
+  you scroll. The heatmap turns into one row per week, newest first, with a bar for each
+  week's total. Charts come before the billed block, panel notes sit behind their own **i**,
+  and Console sync, Appearance, and Pause live in a bottom sheet. Compact view is on by
+  default: the four figures share one row, heatmap cells and type are smaller, and the weekly
+  trend fits on the first screen. Turn it off under Settings > Appearance.
 
 ## Commands
 
