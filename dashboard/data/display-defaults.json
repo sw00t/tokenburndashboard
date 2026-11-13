@@ -4,5 +4,6 @@
   "panelFigureScale": 1,
   "density": 1,
   "palette": "ink",
-  "barCollapsed": false
+  "barCollapsed": true,
+  "compact": true
 }

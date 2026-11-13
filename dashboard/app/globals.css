@@ -1525,3 +1525,996 @@ h1 {
   border-color: var(--billed);
   color: var(--billed);
 }
+
+/* ---- compact hero: big title, subtitle, info popover, controls in thin rows ---- */
+.titleRow {
+  align-items: center;
+}
+
+.titleText {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.titleText h1 {
+  font-size: calc(clamp(28px, 4.6vw, 56px) * var(--title-scale));
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--accent);
+  font-size: clamp(13px, 1.4vw, 16px);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.titleActions {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex: none;
+}
+
+.titleActions .pause {
+  margin-top: 0;
+}
+
+.info {
+  position: relative;
+}
+
+.info summary {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  color: var(--soft);
+  font: italic 700 15px/1 Georgia, serif;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+
+.info summary::-webkit-details-marker {
+  display: none;
+}
+
+.info summary:hover,
+.info[open] summary {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.infoPanel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  z-index: 20;
+  width: min(440px, calc(100vw - 32px));
+  display: grid;
+  gap: 10px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--bg);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+  color: var(--soft);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.infoPanel p {
+  margin: 0;
+}
+
+/* Range, sources and the fidelity toggle flow left to right and wrap into 1-2 thin rows. */
+.hero .controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.hero .range {
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  border-radius: 8px;
+}
+
+.hero .range button {
+  min-height: 26px;
+  padding: 0 10px;
+}
+
+.hero .sources {
+  display: contents;
+}
+
+.hero .sourceToggle,
+.hero .fidelityToggle {
+  min-height: 28px;
+  padding: 0 9px;
+  font-size: 12px;
+  gap: 6px;
+}
+
+.hero .sourceToggle small,
+.hero .fidelityToggle small {
+  margin-left: 4px;
+}
+
+.hero .controlsNote {
+  flex-basis: 100%;
+}
+
+@media (max-width: 560px) {
+  .titleRow {
+    align-items: flex-start;
+  }
+}
+
+/* ---- phone layout: keep the title readable and pull the figures up ---- */
+@media (max-width: 880px) {
+  .stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  /* The title control can shrink the title, but never below the subtitle. */
+  .titleText h1 {
+    font-size: max(24px, calc(30px * var(--title-scale)));
+  }
+
+  .subtitle {
+    font-size: 13px;
+  }
+
+  .hero .range button {
+    padding: 0 8px;
+  }
+
+  /* The format key is spelled out in the i panel; on a phone the button just says what it does. */
+  .hero .fidelityToggle small {
+    display: none;
+  }
+
+  /* Appearance: steppers in a two-column grid instead of one per row. */
+  .displayBar:not(.collapsed) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px 10px;
+  }
+
+  .displayBar:not(.collapsed) > .barToggle,
+  .displayBar:not(.collapsed) > .swatches {
+    grid-column: 1 / -1;
+  }
+
+  .displayBar .stepper {
+    display: grid;
+    grid-template-columns: 26px minmax(0, 1fr) 26px;
+    grid-template-rows: auto auto;
+    gap: 2px 4px;
+    align-items: center;
+  }
+
+  .displayBar .stepper .label {
+    grid-column: 1 / -1;
+    margin: 0;
+  }
+
+  .displayBar .stepper button {
+    width: 26px;
+    height: 26px;
+  }
+
+  .displayBar .stepper output {
+    min-width: 0;
+  }
+
+  .displayBar .swatches {
+    flex-wrap: wrap;
+  }
+
+  .syncSchedule button {
+    white-space: nowrap;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+/* ================================================================
+   Phone layout (600px and below). Desktop markup is hidden with
+   .deskOnly and phone markup shown with .phoneOnly, so neither view
+   pays for the other and nothing flashes on load.
+   ================================================================ */
+/* The calendar opens scrolled to the latest weeks; keep the day names in view. */
+.calendar .dayLabels {
+  position: sticky;
+  left: -16px;
+  z-index: 1;
+  margin-left: -16px;
+  padding-left: 16px;
+  background: var(--panel);
+}
+
+.pillRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+@media (min-width: 601px) {
+  .phoneOnly {
+    display: none !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .deskOnly {
+    display: none !important;
+  }
+
+  /* Flex column so the charts can move up ahead of the billed block. */
+  .page {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 24px);
+    padding-top: 14px;
+  }
+
+  .chartsGrid {
+    order: 1;
+  }
+
+  .money,
+  .fidelityBar {
+    order: 2;
+  }
+
+  .chartsGrid ~ * {
+    order: 3;
+  }
+
+  /* ---- header ---- */
+  .hero {
+    gap: 0;
+    padding-bottom: 10px;
+    border-bottom: 0;
+  }
+
+  .titleRow {
+    display: block;
+  }
+
+  .titleText {
+    gap: 2px;
+  }
+
+  .titleText h1 {
+    font-size: clamp(22px, 7.4vw, 30px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .subtitle {
+    font-size: 12px;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .phoneSync {
+    justify-self: start;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 8px;
+    padding: 4px 10px 4px 9px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--soft);
+    background: transparent;
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+    cursor: pointer;
+  }
+
+  .phoneSyncChevron {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  /* ---- sticky control row ---- */
+  .phoneBar {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 -12px;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--line);
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    -webkit-backdrop-filter: blur(12px) saturate(1.3);
+    backdrop-filter: blur(12px) saturate(1.3);
+  }
+
+  .phoneBar .range {
+    flex: 1 1 auto;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 2px;
+    padding: 2px;
+    border-radius: 9px;
+  }
+
+  .phoneBar .range button {
+    min-height: 30px;
+    padding: 0;
+    letter-spacing: 0.04em;
+  }
+
+  .phoneChip {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    height: 36px;
+    padding: 0 10px;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    color: var(--soft);
+    background: transparent;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .phoneChip b {
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .phoneChip span {
+    color: var(--muted);
+    font-size: 10px;
+  }
+
+  .phoneChip[aria-expanded="true"] {
+    border-color: var(--accent);
+  }
+
+  .phoneIcon,
+  .phoneBar .info summary {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    color: var(--soft);
+    background: transparent;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .phoneBar .info summary {
+    font-size: 15px;
+  }
+
+  .phoneBar .info {
+    position: static;
+  }
+
+  .phoneBar .infoPanel {
+    left: 12px;
+    right: 12px;
+    width: auto;
+  }
+
+  .scrim {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    animation: fadeIn 0.18s ease-out;
+  }
+
+  .scrim.clear {
+    background: transparent;
+    animation: none;
+  }
+
+  .sourcesSheet {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 12px;
+    right: 12px;
+    z-index: 1;
+    display: grid;
+    gap: 10px;
+    padding: 12px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--panel);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+    animation: dropIn 0.16s ease-out;
+  }
+
+  .sourcesList {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .sourcesSheet .sourceToggle,
+  .sourcesSheet .fidelityToggle {
+    min-height: 38px;
+    font-size: 12px;
+  }
+
+  .sourcesSheet .sourceToggle small {
+    font-size: 9px;
+  }
+
+  .sourcesSheet .pillRow {
+    gap: 6px;
+    font-size: 11px;
+  }
+
+  .sourcesSheet .pill {
+    min-height: 22px;
+    padding: 2px 8px;
+  }
+
+  /* ---- figures ---- */
+  .stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .stats .stat {
+    padding: 10px 12px;
+  }
+
+  .stats .stat strong {
+    margin-top: 4px;
+    font-size: max(22px, calc(26px * var(--figure-scale)));
+  }
+
+  .stat .label {
+    font-size: 10px;
+  }
+
+  .stats .stat > span:last-child,
+  .moneyStat > span:last-child {
+    font-size: 12px;
+  }
+
+  .money {
+    gap: 6px;
+    margin-top: 12px;
+    padding: 10px 12px 12px;
+  }
+
+  .moneyLead p {
+    display: none;
+  }
+
+  .moneyGrid {
+    gap: 10px 12px;
+  }
+
+  .moneyStat {
+    padding: 8px 0 0;
+  }
+
+  .moneyStat strong {
+    margin-top: 2px;
+    font-size: max(20px, calc(22px * var(--figure-scale)));
+  }
+
+  /* ---- panels: notes sit behind an i ---- */
+  .grid {
+    gap: 12px;
+  }
+
+  .chartsGrid {
+    margin-top: 12px;
+  }
+
+  .panelHeader {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+  }
+
+  .panelHeader > div:first-child {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .panelAside {
+    display: contents;
+  }
+
+  .panelInfo summary {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    color: var(--soft);
+    font: italic 700 13px/1 Georgia, serif;
+    list-style: none;
+    cursor: pointer;
+  }
+
+  .panelInfo summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .panelInfo[open] summary {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .panelInfo:not([open]) ~ .panelNote {
+    display: none;
+  }
+
+  .panelNote {
+    flex-basis: 100%;
+    margin: 0;
+    text-align: left;
+    line-height: 1.5;
+  }
+
+  /* ---- heatmap, one week per row ---- */
+  .weekRows {
+    display: grid;
+    gap: 5px;
+    padding: 12px 12px 10px;
+  }
+
+  .weekRow {
+    display: grid;
+    grid-template-columns: 42px auto minmax(0, 1fr);
+    align-items: center;
+    gap: 10px;
+  }
+
+  .weekLabel {
+    color: var(--muted);
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .weekCells {
+    display: grid;
+    grid-template-columns: repeat(7, 20px);
+    gap: 4px;
+  }
+
+  .weekCells .cell {
+    width: 20px;
+    height: 20px;
+    min-width: 0;
+    aspect-ratio: auto;
+    border: 1px solid rgba(var(--ink-rgb), 0.08);
+    border-radius: 5px;
+  }
+
+  .weekCells .cell.empty {
+    background: rgba(var(--ink-rgb), 0.04);
+    border-color: transparent;
+  }
+
+  .weekHead {
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .weekHead .weekCells span {
+    text-align: center;
+  }
+
+  .weekTotal {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 46px;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .weekTotal i {
+    display: block;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--accent);
+    opacity: 0.85;
+  }
+
+  .weekTotal b {
+    color: var(--soft);
+    font-size: 11px;
+    font-weight: 700;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .weekMore {
+    justify-self: start;
+    margin-top: 6px;
+  }
+
+  .legend {
+    flex-wrap: nowrap;
+    gap: 3px;
+    padding: 0 12px 12px;
+    font-size: 11px;
+    white-space: nowrap;
+  }
+
+  .legend i {
+    width: 10px;
+    height: 10px;
+  }
+
+  .legend span {
+    margin: 0 3px;
+  }
+
+  .legendGap {
+    margin-left: 10px !important;
+  }
+
+  /* ---- settings sheet ---- */
+  .sheetLayer {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+  }
+
+  .sheet {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: grid;
+    gap: 14px;
+    max-height: 86vh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 8px 16px calc(20px + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--line);
+    border-radius: 18px 18px 0 0;
+    background: var(--bg);
+    box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.4);
+    animation: sheetUp 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .sheetHead {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .sheetGrip {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: 40px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--line);
+  }
+
+  .sheetHead h2 {
+    margin: 0;
+    font-size: 18px;
+  }
+
+  .sheet .syncBar {
+    margin-top: 0;
+  }
+
+  .sheetBlock {
+    display: grid;
+    gap: 10px;
+    padding: 12px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--panel);
+  }
+
+  .sheetBlock > .label {
+    margin: 0;
+  }
+
+  .sheetAppearance {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 12px;
+  }
+
+  .sheetAppearance .stepper {
+    display: grid;
+    grid-template-columns: 30px minmax(0, 1fr) 30px;
+    gap: 4px;
+    align-items: center;
+  }
+
+  .sheetAppearance .stepper .label {
+    grid-column: 1 / -1;
+    margin: 0;
+  }
+
+  .sheetAppearance .stepper button {
+    width: 30px;
+    height: 30px;
+  }
+
+  .sheetAppearance .stepper output {
+    min-width: 0;
+  }
+
+  .sheetAppearance .swatches,
+  .sheetAppearance .saveDefault {
+    grid-column: 1 / -1;
+  }
+
+  .sheetAppearance .swatches {
+    flex-wrap: wrap;
+  }
+
+  .sheetAppearance .swatches .label {
+    flex-basis: 100%;
+  }
+
+  /* The trend SVG renders at under half size here; CSS beats the fontSize attribute. */
+  .trend svg text {
+    font-size: 20px;
+  }
+
+  /* Larger labels reach past the plot edges; let them, and pad the frame instead. */
+  .trend {
+    padding-left: 26px;
+    padding-right: 16px;
+  }
+
+  .trend svg {
+    overflow: visible;
+  }
+
+  .sheetAppearance .swatch {
+    width: 40px;
+    height: 32px;
+  }
+
+  .sheet .pause {
+    min-height: 40px;
+  }
+
+  .sheetHint {
+    margin: 0;
+    font-size: 12px;
+  }
+}
+
+@keyframes sheetUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes dropIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sheet,
+  .scrim,
+  .sourcesSheet {
+    animation: none;
+  }
+}
+
+/*
+ * Compact phone view, on by default (Settings > Compact view). The aim is the
+ * figures, the latest weeks of the heatmap and the weekly trend all on the
+ * first screen. Type is scaled separately by the generated block below.
+ */
+@media (max-width: 600px) {
+  /* Figures: one row of four, with most of the padding gone. */
+  .page.compact .stats {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 4px;
+    margin-top: 6px;
+  }
+
+  .page.compact .stats .stat {
+    padding: 3px 5px;
+    border-radius: 6px;
+  }
+
+  .page.compact .stats .stat strong {
+    margin-top: 1px;
+    letter-spacing: -0.01em;
+  }
+
+  .page.compact .stats .stat > *,
+  .page.compact .stats .stat strong {
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .page.compact .chartsGrid {
+    margin-top: 8px;
+  }
+
+  /* Heatmap cells 40% smaller (20px to 12px), with gaps and radii to match. */
+  .page.compact .weekRows {
+    gap: 3px;
+    padding: 8px 12px 8px;
+  }
+
+  .page.compact .weekRow {
+    grid-template-columns: 36px auto minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .page.compact .weekCells {
+    grid-template-columns: repeat(7, 12px);
+    gap: 2.4px;
+  }
+
+  .page.compact .weekCells .cell {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+  }
+
+  .page.compact .weekTotal i {
+    height: 4px;
+  }
+
+  .page.compact .legend {
+    padding-bottom: 8px;
+  }
+
+  .page.compact .legend i {
+    width: 6px;
+    height: 6px;
+  }
+
+  .page.compact .panelHeader {
+    padding: 8px 12px;
+  }
+
+  .page.compact .panelInfo summary {
+    width: 24px;
+    height: 24px;
+    font-size: calc(13px * var(--compact-type));
+  }
+}
+
+/* ---- compact phone view (generated font block) ---- */
+/* Each phone-visible font size, scaled by --compact-type. Regenerate rather than hand-edit. */
+@media (max-width: 600px) {
+  .page.compact { --compact-type: 0.85; font-size: calc(16px * var(--compact-type)); }
+  .page.compact .eyebrow, .page.compact .label, .page.compact .pill, .page.compact .range button, .page.compact .table th { font-size: calc(11px * var(--compact-type)); }
+  .page.compact h1 { font-size: calc(calc(clamp(22px, 4vw, 50px) * var(--title-scale)) * var(--compact-type)); }
+  .page.compact .lead { font-size: calc(clamp(17px, 2vw, 21px) * var(--compact-type)); }
+  .page.compact .stat strong { font-size: calc(calc(clamp(26px, 4vw, 42px) * var(--figure-scale)) * var(--compact-type)); }
+  .page.compact .panelHeader h2 { font-size: calc(22px * var(--compact-type)); }
+  .page.compact .panelHeader p { font-size: calc(13px * var(--compact-type)); }
+  .page.compact .legend { font-size: calc(12px * var(--compact-type)); }
+  .page.compact .source strong { font-size: calc(24px * var(--compact-type)); }
+  .page.compact .equivalent strong { font-size: calc(27px * var(--compact-type)); }
+  .page.compact .table th, .page.compact .table td { font-size: calc(13px * var(--compact-type)); }
+  .page.compact .footerNote { font-size: calc(14px * var(--compact-type)); }
+  @media (max-width: 560px) { .page.compact h1 { font-size: calc(calc(30px * var(--title-scale)) * var(--compact-type)); } }
+  .page.compact .fidelityBar { font-size: calc(13px * var(--compact-type)); }
+  .page.compact .toggle button { font-size: calc(11px * var(--compact-type)); }
+  .page.compact .dayLabels span { font-size: calc(10px * var(--compact-type)); }
+  .page.compact .math { font-size: calc(12px * var(--compact-type)); }
+  .page.compact .footnoteInline { font-size: calc(13px * var(--compact-type)); }
+  .page.compact .actions li { font-size: calc(14px * var(--compact-type)); }
+  .page.compact .method li { font-size: calc(14px * var(--compact-type)); }
+  .page.compact .sourceToggle { font-size: calc(13px * var(--compact-type)); }
+  .page.compact .sourceToggle small { font-size: calc(10px * var(--compact-type)); }
+  .page.compact .controlsNote { font-size: calc(12px * var(--compact-type)); }
+  .page.compact .fidelityToggle { font-size: calc(13px * var(--compact-type)); }
+  .page.compact .fidelityToggle small { font-size: calc(10px * var(--compact-type)); }
+  .page.compact .panel .stat { font-size: calc(calc(16px * var(--panel-figure-scale)) * var(--compact-type)); }
+  .page.compact .panel .stat .label { font-size: calc(calc(11px * var(--panel-figure-scale)) * var(--compact-type)); }
+  .page.compact .panel .stat strong { font-size: calc(calc(clamp(26px, 4vw, 42px) * var(--panel-figure-scale)) * var(--compact-type)); }
+  .page.compact .stepper button { font-size: calc(16px * var(--compact-type)); }
+  .page.compact .stepper output { font-size: calc(12px * var(--compact-type)); }
+  .page.compact .pauseGroup { font-size: calc(12px * var(--compact-type)); }
+  .page.compact .pause { font-size: calc(11px * var(--compact-type)); }
+  .page.compact .panelHeader h2 { font-size: calc(clamp(16px, calc(22px * max(0.75, var(--density))), 22px) * var(--compact-type)); }
+  .page.compact .expand { font-size: calc(11px * var(--compact-type)); }
+  .page.compact .syncSummary { font-size: calc(12px * var(--compact-type)); }
+  .page.compact .syncSchedule button { font-size: calc(11px * var(--compact-type)); }
+  .page.compact .syncPull, .page.compact .syncBackfill { font-size: calc(11px * var(--compact-type)); }
+  .page.compact .syncSetup p { font-size: calc(13px * var(--compact-type)); }
+  .page.compact .syncSetup .muted { font-size: calc(12px * var(--compact-type)); }
+  .page.compact .syncCmd code { font-size: calc(12.5px * var(--compact-type)); }
+  .page.compact .syncCmd button { font-size: calc(11px * var(--compact-type)); }
+  .page.compact .syncWarn { font-size: calc(12px * var(--compact-type)); }
+  .page.compact .syncPct { font-size: calc(11px * var(--compact-type)); }
+  .page.compact .barToggle .chevron { font-size: calc(10px * var(--compact-type)); }
+  .page.compact .barSummary { font-size: calc(12px * var(--compact-type)); }
+  .page.compact .modelRow strong { font-size: calc(15px * var(--compact-type)); }
+  .page.compact .moneyLead p { font-size: calc(12.5px * var(--compact-type)); }
+  .page.compact .reconcileScore strong { font-size: calc(calc(clamp(30px, 5vw, 46px) * var(--panel-figure-scale)) * var(--compact-type)); }
+  .page.compact .reconcileScore .muted { font-size: calc(13px * var(--compact-type)); }
+  .page.compact .reconcileKey { font-size: calc(12px * var(--compact-type)); }
+  .page.compact .reconcileDate { font-size: calc(11px * var(--compact-type)); }
+  .page.compact .reconcileDrift { font-size: calc(12px * var(--compact-type)); }
+  .page.compact .eyebrow { font-size: calc(15px * var(--compact-type)); }
+  .page.compact .lead { font-size: calc(clamp(11px, 1.4vw, 15px) * var(--compact-type)); }
+  .page.compact .saveDefault { font-size: calc(11px * var(--compact-type)); }
+  .page.compact .modelVendor { font-size: calc(10px * var(--compact-type)); }
+  .page.compact .modelLane { font-size: calc(10px * var(--compact-type)); }
+  .page.compact .sourceSub { font-size: calc(11px * var(--compact-type)); }
+  .page.compact .syncDetailsToggle { font-size: calc(11px * var(--compact-type)); }
+  .page.compact .titleText h1 { font-size: calc(calc(clamp(28px, 4.6vw, 56px) * var(--title-scale)) * var(--compact-type)); }
+  .page.compact .subtitle { font-size: calc(clamp(13px, 1.4vw, 16px) * var(--compact-type)); }
+  .page.compact .infoPanel { font-size: calc(13px * var(--compact-type)); }
+  .page.compact .hero .sourceToggle, .page.compact .hero .fidelityToggle { font-size: calc(12px * var(--compact-type)); }
+  @media (max-width: 560px) { .page.compact .titleText h1 { font-size: calc(max(24px, calc(30px * var(--title-scale))) * var(--compact-type)); } }
+  @media (max-width: 560px) { .page.compact .subtitle { font-size: calc(13px * var(--compact-type)); } }
+  .page.compact .titleText h1 { font-size: calc(clamp(22px, 7.4vw, 30px) * var(--compact-type)); }
+  .page.compact .subtitle { font-size: calc(12px * var(--compact-type)); }
+  .page.compact .phoneSync { font-size: calc(12px * var(--compact-type)); }
+  .page.compact .phoneSyncChevron { font-size: calc(14px * var(--compact-type)); }
+  .page.compact .phoneChip { font-size: calc(12px * var(--compact-type)); }
+  .page.compact .phoneChip span { font-size: calc(10px * var(--compact-type)); }
+  .page.compact .phoneIcon, .page.compact .phoneBar .info summary { font-size: calc(20px * var(--compact-type)); }
+  .page.compact .phoneBar .info summary { font-size: calc(15px * var(--compact-type)); }
+  .page.compact .sourcesSheet .sourceToggle, .page.compact .sourcesSheet .fidelityToggle { font-size: calc(12px * var(--compact-type)); }
+  .page.compact .sourcesSheet .sourceToggle small { font-size: calc(9px * var(--compact-type)); }
+  .page.compact .sourcesSheet .pillRow { font-size: calc(11px * var(--compact-type)); }
+  .page.compact .stats .stat strong { font-size: calc(max(22px, calc(26px * var(--figure-scale))) * var(--compact-type)); }
+  .page.compact .stat .label { font-size: calc(10px * var(--compact-type)); }
+  .page.compact .stats .stat > span:last-child, .page.compact .moneyStat > span:last-child { font-size: calc(12px * var(--compact-type)); }
+  .page.compact .moneyStat strong { font-size: calc(max(20px, calc(22px * var(--figure-scale))) * var(--compact-type)); }
+  .page.compact .weekLabel { font-size: calc(11px * var(--compact-type)); }
+  .page.compact .weekHead { font-size: calc(10px * var(--compact-type)); }
+  .page.compact .weekTotal b { font-size: calc(11px * var(--compact-type)); }
+  .page.compact .legend { font-size: calc(11px * var(--compact-type)); }
+  .page.compact .sheetHead h2 { font-size: calc(18px * var(--compact-type)); }
+  .page.compact .trend svg text { font-size: calc(20px * var(--compact-type)); }
+  .page.compact .sheetHint { font-size: calc(12px * var(--compact-type)); }
+  .page.compact.compact .panelInfo summary { font-size: calc(calc(13px * var(--compact-type)) * var(--compact-type)); }
+}
+/* ---- end compact phone view ---- */

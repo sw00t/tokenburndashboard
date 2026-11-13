@@ -1,6 +1,6 @@
 "use client";
 
-import { type CSSProperties, useEffect, useMemo, useState } from "react";
+import { type CSSProperties, useEffect, useMemo, useRef, useState } from "react";
 
 // Seeded from the committed synthetic sample so a fresh clone builds and renders.
 // Your real data/daily-burn.json is gitignored and loaded at runtime via /api/burn-rows.
@@ -96,6 +96,27 @@ export default function TokenBurnDashboard() {
     document.body.style.color = palette.vars["--ink"];
   }, [palette]);
 
+  // Phone-only overlays: the settings sheet and the sources dropdown.
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [sourcesOpen, setSourcesOpen] = useState(false);
+  useEffect(() => {
+    if (!menuOpen && !sourcesOpen) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+        setSourcesOpen(false);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    // The sheet scrolls on its own; the page behind it should not.
+    const lock = menuOpen ? document.body.style.overflow : null;
+    if (menuOpen) document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      if (lock !== null) document.body.style.overflow = lock;
+    };
+  }, [menuOpen, sourcesOpen]);
+
   const [savedDefault, setSavedDefault] = useState(false);
   const saveAsDefault = async () => {
     try {
@@ -168,29 +189,84 @@ export default function TokenBurnDashboard() {
   const nextActions = buildNextActions(selectedRows);
   const derivedDays = selectedRows.filter((row) => row.claude_code_fidelity !== "exact" && row.claude_code_fidelity !== "none").length;
 
-  return (
-    <main className="page" style={mainStyle} data-scheme={palette.scheme}>
-      <section className="hero">
-        <p className="eyebrow">Token burn dashboard</p>
-        <div className="titleRow">
-          <h1>AI Usage by Day, Source, and Work Driver.</h1>
+  // The heatmap reads left to right, oldest first; open it on the latest weeks.
+  const calendarRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = calendarRef.current;
+    if (el) el.scrollLeft = el.scrollWidth;
+  }, [calendar.length, windowKey]);
+
+  const fidelityPills = (
+    <div className="pillRow">
+      {billedTokens > 0 && <span className="pill billed">billed {formatTokens(billedTokens)}</span>}
+      <span className="pill exact">exact {formatTokens(exactTokens)}</span>
+      <span className="pill estimated">estimated {formatTokens(estimatedTokens)}</span>
+      {derivedDays > 0 && (
+        <span className="pill derived">
+          {derivedDays} day{derivedDays === 1 ? "" : "s"} derived from pruned logs
+        </span>
+      )}
+    </div>
+  );
+
+  // Shared by the desktop Appearance bar and the phone settings sheet.
+  const appearanceControls = (
+    <>
+      <Stepper label="Title" value={display.titleScale} onChange={(d) => bump("titleScale", d)} />
+      <Stepper label="Figures" value={display.figureScale} onChange={(d) => bump("figureScale", d)} />
+      <Stepper label="Panel figures" value={display.panelFigureScale} onChange={(d) => bump("panelFigureScale", d)} />
+      <Stepper label="Density" value={display.density} onChange={(d) => bump("density", d)} />
+      <div className="swatches" role="group" aria-label="Colour palette">
+        <span className="label">Palette</span>
+        {palettes.map((option) => (
           <button
+            key={option.key}
             type="button"
-            className="pause"
-            onClick={pauseInPlace}
-            title="Freezes this tab as a static view that keeps rendering after npm run dev stops. Nothing is saved unless you say yes to the prompt."
+            className="swatch"
+            aria-pressed={display.palette === option.key}
+            title={option.label}
+            aria-label={`${option.label} palette`}
+            onClick={() => setDisplay((prev) => ({ ...prev, palette: option.key }))}
+            style={{ background: option.vars["--bg"], borderColor: option.vars["--line"] }}
           >
-            Pause
+            <i style={{ background: option.vars["--accent"] }} />
+            <i style={{ background: option.vars["--fresh"] }} />
           </button>
+        ))}
+      </div>
+      <button
+        type="button"
+        className="saveDefault"
+        onClick={saveAsDefault}
+        title="Write these settings to data/display-defaults.json so a fresh browser, a cleared cache, or a deployed copy starts looking exactly like this."
+      >
+        {savedDefault ? "Saved" : "Save as default"}
+      </button>
+    </>
+  );
+
+  return (
+    <main className={`page${display.compact ? " compact" : ""}`} style={mainStyle} data-scheme={palette.scheme}>
+      <section className="hero">
+        <div className="titleRow">
+          <div className="titleText">
+            <h1>Token Burn Dashboard</h1>
+            <p className="subtitle">AI Usage by Day, Source, and Work Driver</p>
+            <PhoneSyncLine sync={sync} onOpen={() => setMenuOpen(true)} />
+          </div>
+          <div className="titleActions deskOnly">
+            <AboutButton />
+            <button
+              type="button"
+              className="pause"
+              onClick={pauseInPlace}
+              title="Freezes this tab as a static view that keeps rendering after npm run dev stops. Nothing is saved unless you say yes to the prompt."
+            >
+              Pause
+            </button>
+          </div>
         </div>
-        <div className="heroRow">
-        <p className="lead">
-          One normalized file, one local day (set by BURN_TZ), every source on the same
-          axes. Exact columns come from local Codex and Claude Code logs; billed columns come from
-          Anthropic&rsquo;s own meter. Chat columns are labeled estimates. Cache reads count toward
-          burn and are shaded separately.
-        </p>
-        <div className="controls">
+        <div className="controls deskOnly">
           <div className="range" aria-label="Select time range">
             {windows.map((windowOption) => (
               <button
@@ -234,11 +310,80 @@ export default function TokenBurnDashboard() {
             </p>
           )}
         </div>
-        </div>
       </section>
 
+      {/* Phone only: one sticky row holding the controls you reach for while scrolling. */}
+      <div className="phoneBar phoneOnly">
+        <div className="range" aria-label="Select time range">
+          {windows.map((windowOption) => (
+            <button
+              key={windowOption.key}
+              type="button"
+              aria-pressed={windowKey === windowOption.key}
+              onClick={() => setWindowKey(windowOption.key)}
+            >
+              {windowOption.label}
+            </button>
+          ))}
+        </div>
+        <button
+          type="button"
+          className="phoneChip"
+          aria-expanded={sourcesOpen}
+          onClick={() => setSourcesOpen((prev) => !prev)}
+        >
+          Sources <b>{sourceColumns.length - hiddenCount}/{sourceColumns.length}</b>
+          <span aria-hidden>{sourcesOpen ? "▴" : "▾"}</span>
+        </button>
+        <AboutButton />
+        <button
+          type="button"
+          className="phoneIcon"
+          aria-label="Settings: Console sync, appearance, pause"
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen(true)}
+        >
+          <span aria-hidden>⋯</span>
+        </button>
+        {sourcesOpen && (
+          <>
+            <div className="scrim clear" onClick={() => setSourcesOpen(false)} aria-hidden />
+            <div className="sourcesSheet" role="group" aria-label="Show or hide sources">
+              <div className="sourcesList">
+                {sourceColumns.map((source) => (
+                  <button
+                    key={source.key}
+                    type="button"
+                    className={`sourceToggle ${source.fidelity}`}
+                    aria-pressed={visible[source.key]}
+                    onClick={() => setVisible((prev) => ({ ...prev, [source.key]: !prev[source.key] }))}
+                  >
+                    <i aria-hidden />
+                    {source.label}
+                    {showFidelity && <small>{source.fidelity}</small>}
+                  </button>
+                ))}
+              </div>
+              <button
+                type="button"
+                className="fidelityToggle"
+                aria-pressed={showFidelity}
+                onClick={() => setShowFidelity((prev) => !prev)}
+              >
+                <i aria-hidden />
+                Fidelity labels
+              </button>
+              {showFidelity && fidelityPills}
+              {hiddenCount > 0 && (
+                <p className="muted controlsNote">Every view recomputes on the visible sources only.</p>
+              )}
+            </div>
+          </>
+        )}
+      </div>
+
       <section
-        className={`displayBar${display.barCollapsed ? " collapsed" : ""}`}
+        className={`displayBar deskOnly${display.barCollapsed ? " collapsed" : ""}`}
         aria-label="Appearance settings"
       >
         <button
@@ -259,48 +404,19 @@ export default function TokenBurnDashboard() {
             {Math.round(display.density * 100)}%
           </span>
         ) : (
-          <>
-            <Stepper label="Title" value={display.titleScale} onChange={(d) => bump("titleScale", d)} />
-            <Stepper label="Figures" value={display.figureScale} onChange={(d) => bump("figureScale", d)} />
-            <Stepper label="Panel figures" value={display.panelFigureScale} onChange={(d) => bump("panelFigureScale", d)} />
-            <Stepper label="Density" value={display.density} onChange={(d) => bump("density", d)} />
-            <div className="swatches" role="group" aria-label="Colour palette">
-              <span className="label">Palette</span>
-              {palettes.map((option) => (
-                <button
-                  key={option.key}
-                  type="button"
-                  className="swatch"
-                  aria-pressed={display.palette === option.key}
-                  title={option.label}
-                  aria-label={`${option.label} palette`}
-                  onClick={() => setDisplay((prev) => ({ ...prev, palette: option.key }))}
-                  style={{ background: option.vars["--bg"], borderColor: option.vars["--line"] }}
-                >
-                  <i style={{ background: option.vars["--accent"] }} />
-                  <i style={{ background: option.vars["--fresh"] }} />
-                </button>
-              ))}
-            </div>
-            <button
-              type="button"
-              className="saveDefault"
-              onClick={saveAsDefault}
-              title="Write these settings to data/display-defaults.json so a fresh browser, a cleared cache, or a deployed copy starts looking exactly like this."
-            >
-              {savedDefault ? "Saved" : "Save as default"}
-            </button>
-          </>
+          appearanceControls
         )}
       </section>
 
-      <ConsoleSyncBar sync={sync} />
+      <div className="deskOnly">
+        <ConsoleSyncBar sync={sync} />
+      </div>
 
       <section className="stats" aria-label="Token burn summary">
-        <Metric label="Total burn" value={formatTokens(total)} note={`${formatPercent(cached, total)} cache reads`} />
-        <Metric label="Peak day" value={formatTokens(peakDay?.total || 0)} note={peakDay?.date || "n/a"} />
-        <Metric label="7d average" value={formatTokens(lastAverage)} note="moving average, active days" />
-        <Metric label="API calls" value={calls.toLocaleString()} note={`${selectedRows.length} active days`} />
+        <Metric label="Total burn" value={formatTokens(total)} note={`${formatPercent(cached, total)} cache reads`} short={`${formatPercent(cached, total)} cached`} />
+        <Metric label="Peak day" value={formatTokens(peakDay?.total || 0)} note={peakDay?.date || "n/a"} short={peakDay ? shortDate(peakDay.date) : "n/a"} />
+        <Metric label="7d average" value={formatTokens(lastAverage)} note="moving average, active days" short="per active day" />
+        <Metric label="API calls" value={calls.toLocaleString()} note={`${selectedRows.length} active days`} short={`${selectedRows.length} days`} />
       </section>
 
       {showCost && (
@@ -313,45 +429,36 @@ export default function TokenBurnDashboard() {
             </p>
           </div>
           <div className="moneyGrid">
-            <MoneyMetric label="Total spend" value={formatUsd(spend)} note={`${spendDays} billed day${spendDays === 1 ? "" : "s"}`} />
+            <MoneyMetric label="Total spend" value={formatUsd(spend)} note={`${spendDays} billed day${spendDays === 1 ? "" : "s"}`} short={`${spendDays} days`} />
             <MoneyMetric
               label="Per 1M tokens"
               value={formatUsd(costPerMillion(spend, billedTokens || total))}
               note="blended rate in view"
+              short="blended"
             />
             <MoneyMetric
               label="Cache reads"
               value={formatUsd(cachedSpend)}
               note={`${formatPercent(cachedSpend, spend)} of spend re-reading context`}
+              short={`${formatPercent(cachedSpend, spend)} of spend`}
             />
             <MoneyMetric
               label="Per billed day"
               value={formatUsd(spendDays ? spend / spendDays : 0)}
               note="mean across days with a charge"
+              short="mean"
             />
           </div>
         </section>
       )}
 
       {showFidelity && (
-      <section className="fidelityBar" aria-label="Fidelity summary">
-        {billedTokens > 0 && <span className="pill billed">billed {formatTokens(billedTokens)}</span>}
-        <span className="pill exact">exact {formatTokens(exactTokens)}</span>
-        <span className="pill estimated">estimated {formatTokens(estimatedTokens)}</span>
-        {derivedDays > 0 && (
-          <span className="pill derived">
-            {derivedDays} day{derivedDays === 1 ? "" : "s"} derived from pruned logs
-          </span>
-        )}
-        <span className="muted">
-          Billed = Anthropic&rsquo;s own meter, the number that settles the invoice. Exact = measured
-          from local session logs. Derived = stats-cache totals scaled by a measured de-duplication
-          ratio. Estimated = interview-based or spread from message counts.
-        </span>
-      </section>
+        <section className="fidelityBar deskOnly" aria-label="Fidelity summary">
+          {fidelityPills}
+        </section>
       )}
 
-      <section className="grid">
+      <section className="grid chartsGrid">
         <Panel
           label="Daily burn"
           title="Heatmap"
@@ -371,7 +478,7 @@ export default function TokenBurnDashboard() {
             </div>
           }
         >
-          <div className="calendarWrap">
+          <div className="calendarWrap deskOnly" ref={calendarRef}>
             <div className="calendar" aria-label="Daily token burn heatmap">
               <div className="dayLabels" aria-hidden>
                 {["Mon", "", "Wed", "", "Fri", "", "Sun"].map((label, index) => (
@@ -409,6 +516,16 @@ export default function TokenBurnDashboard() {
               ))}
             </div>
           </div>
+          <WeekRows
+            weeks={calendar}
+            heatValue={heatValue}
+            mixValue={(row) =>
+              heatMetricEffective === "cost" ? row.cost_usd - row.cost_cached_usd : row.fresh
+            }
+            maxHeat={maxHeat}
+            palette={palette}
+            metric={heatMetricEffective}
+          />
           <div className="legend" aria-hidden>
             <span>less</span>
             {[0.2, 0.4, 0.6, 0.8, 1].map((n) => (
@@ -834,6 +951,50 @@ export default function TokenBurnDashboard() {
         local logs plus a private estimates file. Raw exports, paths, and project names stay out of
         this app.
       </p>
+
+      {menuOpen && (
+        <div className="sheetLayer phoneOnly">
+          <div className="scrim" onClick={() => setMenuOpen(false)} aria-hidden />
+          <section className="sheet" role="dialog" aria-modal="true" aria-label="Settings">
+            <div className="sheetHead">
+              <span className="sheetGrip" aria-hidden />
+              <h2>Settings</h2>
+              <button type="button" className="phoneIcon" aria-label="Close settings" onClick={() => setMenuOpen(false)}>
+                <span aria-hidden>×</span>
+              </button>
+            </div>
+            <ConsoleSyncBar sync={sync} />
+            <div className="sheetBlock">
+              <p className="label">Appearance</p>
+              <button
+                type="button"
+                className="fidelityToggle"
+                aria-pressed={display.compact}
+                onClick={() => setDisplay((prev) => ({ ...prev, compact: !prev.compact }))}
+              >
+                <i aria-hidden />
+                Compact view
+                <small>{display.compact ? "on" : "off"}</small>
+              </button>
+              <div className="sheetAppearance">{appearanceControls}</div>
+            </div>
+            <div className="sheetBlock">
+              <p className="label">Snapshot</p>
+              <button
+                type="button"
+                className="pause"
+                onClick={() => {
+                  setMenuOpen(false);
+                  setTimeout(pauseInPlace, 50);
+                }}
+              >
+                Pause this view
+              </button>
+              <p className="muted sheetHint">Freezes this tab as a static copy. Nothing is saved unless you confirm.</p>
+            </div>
+          </section>
+        </div>
+      )}
     </main>
   );
 }
@@ -846,6 +1007,8 @@ type DisplaySettings = {
   palette: string;
   /** Appearance controls collapsed to a thin bar. Persisted like the rest. */
   barCollapsed: boolean;
+  /** Phone only: tighter tiles, smaller heatmap cells and type, so the trend fits on the first screen. */
+  compact: boolean;
 };
 const DISPLAY_KEY = "token-burn-display";
 /**
@@ -856,7 +1019,7 @@ const DISPLAY_KEY = "token-burn-display";
  */
 const builtInDisplay: DisplaySettings = {
   titleScale: 1, figureScale: 1, panelFigureScale: 1, density: 1,
-  palette: defaultPalette.key, barCollapsed: false,
+  palette: defaultPalette.key, barCollapsed: true, compact: true,
 };
 const defaultDisplay: DisplaySettings = {
   ...builtInDisplay,
@@ -944,22 +1107,166 @@ ${clone.outerHTML}
   window.location.assign(url);
 }
 
-function Metric({ label, value, note }: { label: string; value: string; note: string }) {
+function Metric({ label, value, note, short }: { label: string; value: string; note: string; short?: string }) {
   return (
     <div className="stat">
       <span className="label">{label}</span>
       <strong>{value}</strong>
-      <span>{note}</span>
+      <NoteText note={note} short={short} />
     </div>
   );
 }
 
-function MoneyMetric({ label, value, note }: { label: string; value: string; note: string }) {
+/** A note with an optional shorter wording that phones show instead. */
+function NoteText({ note, short }: { note: string; short?: string }) {
+  if (!short) return <span>{note}</span>;
+  return (
+    <span>
+      <span className="deskOnly">{note}</span>
+      <span className="phoneOnly">{short}</span>
+    </span>
+  );
+}
+
+function shortDate(date: string) {
+  const d = new Date(`${date}T00:00:00Z`);
+  return d.toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
+}
+
+/** The "i" button and its panel: the page description and the fidelity definitions. */
+function AboutButton() {
+  return (
+    <details className="info">
+      <summary aria-label="About this dashboard" title="About this dashboard">i</summary>
+      <div className="infoPanel">
+        <p>
+          One normalized file, one local day (set by BURN_TZ), every source on the same
+          axes. Exact columns come from local Codex and Claude Code logs; billed columns come from
+          Anthropic&rsquo;s own meter. Chat columns are labeled estimates. Cache reads count toward
+          burn and are shaded separately.
+        </p>
+        <p>
+          <strong>Fidelity.</strong> Billed = Anthropic&rsquo;s own meter, the number that settles
+          the invoice. Exact = measured from local session logs. Derived = stats-cache totals
+          scaled by a measured de-duplication ratio. Estimated = interview-based or spread from
+          message counts.
+        </p>
+      </div>
+    </details>
+  );
+}
+
+/** Phone only: one tappable line standing in for the Console sync bar. */
+function PhoneSyncLine({ sync, onOpen }: { sync: ReturnType<typeof useConsoleSync>; onOpen: () => void }) {
+  const { status, busy, unreachable } = sync;
+  if (unreachable || !status) return null;
+  const running = busy || status.running;
+  const tone = running
+    ? "working"
+    : !status.hasCredential
+      ? "idle"
+      : status.authProblem || status.lastOk === false
+        ? "bad"
+        : "ok";
+  const text = running
+    ? `Pulling from Console${status.progress ? ` · ${status.progress.pct}%` : ""}`
+    : !status.hasCredential
+      ? "Console not connected"
+      : tone === "bad"
+        ? "Console sync needs attention"
+        : `${status.billedDays} billed days · synced ${formatAge(status.ageMs)}`;
+  return (
+    <button type="button" className="phoneSync phoneOnly" onClick={onOpen}>
+      <span className={`syncDot ${tone}`} aria-hidden />
+      {text}
+      <span aria-hidden className="phoneSyncChevron">›</span>
+    </button>
+  );
+}
+
+/**
+ * Phone heatmap: one row per week, newest first, seven day cells plus a bar for the
+ * week's total. Same colour scale as the desktop calendar, turned to fit a tall screen.
+ */
+function WeekRows({
+  weeks,
+  heatValue,
+  mixValue,
+  maxHeat,
+  palette,
+  metric,
+}: {
+  weeks: ReturnType<typeof calendarWeeks>;
+  heatValue: (row: BurnRow) => number;
+  mixValue: (row: BurnRow) => number;
+  maxHeat: number;
+  palette: Palette;
+  metric: HeatMetric;
+}) {
+  const [all, setAll] = useState(false);
+  const rows = [...weeks].reverse().map((week) => ({
+    start: week[0].date,
+    cells: week,
+    total: week.reduce((sum, cell) => sum + (cell.row ? heatValue(cell.row) : 0), 0),
+  }));
+  const maxWeek = Math.max(...rows.map((r) => r.total), 1);
+  const LIMIT = 12;
+  const shown = all ? rows : rows.slice(0, LIMIT);
+  const fmt = (n: number) => (metric === "cost" ? formatUsd(n) : formatTokens(n));
+  // Linear on purpose: the cells already carry the log colour scale, so the bar shows true proportion.
+  const width = (n: number) => (n > 0 ? Math.max(3, (n / maxWeek) * 100) : 0);
+  return (
+    <div className="weekRows phoneOnly">
+      <div className="weekRow weekHead" aria-hidden>
+        <span />
+        <span className="weekCells">
+          {["M", "T", "W", "T", "F", "S", "S"].map((d, i) => (
+            <span key={i}>{d}</span>
+          ))}
+        </span>
+        <span>week</span>
+      </div>
+      {shown.map((week) => (
+        <div key={week.start} className="weekRow">
+          <span className="weekLabel">{shortDate(week.start)}</span>
+          <span className="weekCells">
+            {week.cells.map((cell) => {
+              const row = cell.row;
+              const title = row
+                ? `${row.date}: ${fmt(heatValue(row))}, ${row.driver}`
+                : `${cell.date}: no recorded usage`;
+              return (
+                <span
+                  key={cell.date}
+                  className={`cell${row ? "" : " empty"}`}
+                  style={row ? heatStyle(heatValue(row), mixValue(row), maxHeat, palette) : undefined}
+                  title={title}
+                  aria-label={title}
+                />
+              );
+            })}
+          </span>
+          <span className="weekTotal">
+            <i style={{ width: `${width(week.total)}%` }} />
+            <b>{week.total > 0 ? fmt(week.total) : "–"}</b>
+          </span>
+        </div>
+      ))}
+      {rows.length > LIMIT && (
+        <button type="button" className="expand weekMore" onClick={() => setAll((prev) => !prev)}>
+          {all ? `Latest ${LIMIT} weeks` : `All ${rows.length} weeks`}
+        </button>
+      )}
+    </div>
+  );
+}
+
+function MoneyMetric({ label, value, note, short }: { label: string; value: string; note: string; short?: string }) {
   return (
     <div className="stat moneyStat">
       <span className="label">{label}</span>
       <strong>{value}</strong>
-      <span>{note}</span>
+      <NoteText note={note} short={short} />
     </div>
   );
 }
@@ -1241,7 +1548,10 @@ function Panel({
         </div>
         <div className="panelAside">
           {action}
-          <p>{note}</p>
+          <details className="panelInfo phoneOnly">
+            <summary aria-label={`About ${title}`}>i</summary>
+          </details>
+          <p className="panelNote">{note}</p>
         </div>
       </div>
       {children}
@@ -1323,7 +1633,8 @@ function TrendChart({ weekly }: { weekly: ReturnType<typeof weeklyTotals> }) {
         w.total > 0 ? <circle key={w.week} cx={x(i).toFixed(1)} cy={y(w.total).toFixed(1)} r="3.5" fill="var(--accent)" /> : null,
       )}
       {weekly.map((w, i) =>
-        i % labelEvery === 0 || i === weekly.length - 1 ? (
+        // The last week is always labelled; drop a regular label that would crowd it.
+        (i % labelEvery === 0 && weekly.length - 1 - i >= Math.ceil(labelEvery * 0.6)) || i === weekly.length - 1 ? (
           <text key={`l-${w.week}`} x={x(i)} y={height - 10} textAnchor="middle" fill="var(--muted)" fontSize="11">
             {w.week.slice(5)}
           </text>
