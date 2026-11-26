@@ -14,7 +14,7 @@ import {
   titleCase,
 } from "../../lib/burn-data";
 import { driverTotals } from "../../lib/insights";
-import { formatPercent, formatTokens, formatUsd } from "../../lib/token-math";
+import { formatPercent, formatTokens, formatUsdFixed } from "../../lib/token-math";
 import { InfoTip } from "./info-tip";
 import { ExpandRow, Panel, PanelHeader, VendorMark } from "./panel";
 
@@ -89,7 +89,7 @@ export function DriversPanel({ rows, showCost }: { rows: BurnRow[]; showCost: bo
             <span className="driverValue">
               {formatTokens(driver.value)} / {driver.share}%
             </span>
-            {showCost && <span className="driverCost">{driver.cost > 0 ? formatUsd(driver.cost) : "—"}</span>}
+            {showCost && <span className="driverCost">{formatUsdFixed(driver.cost)}</span>}
           </div>
         ))}
       </div>

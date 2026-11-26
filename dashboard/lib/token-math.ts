@@ -27,6 +27,12 @@ export function formatUsd(value: number) {
   return `$${value.toFixed(3)}`;
 }
 
+/** Dollars at a fixed precision, for columns that should line up digit for digit. */
+export function formatUsdFixed(value: number, digits = 3) {
+  if (!Number.isFinite(value)) value = 0;
+  return `${value < 0 ? "-" : ""}$${Math.abs(value).toLocaleString("en-US", { minimumFractionDigits: digits, maximumFractionDigits: digits })}`;
+}
+
 /** Blended rate for the window. The single number that makes caching legible. */
 export function costPerMillion(usd: number, tokens: number) {
   if (!tokens) return 0;
