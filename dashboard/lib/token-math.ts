@@ -2,6 +2,7 @@ import type { CSSProperties } from "react";
 
 import type { BurnRow } from "./burn-data";
 import { toUtcDate } from "./date-windows";
+import { type Palette, defaultPalette } from "./themes";
 
 export function formatTokens(value: number) {
   if (value >= 1_000_000_000) return `${(value / 1_000_000_000).toFixed(2)}B`;
@@ -22,6 +23,7 @@ export function formatUsd(value: number) {
   if (abs >= 100) return `$${Math.round(value).toLocaleString("en-US")}`;
   if (abs >= 1) return `$${value.toFixed(2)}`;
   if (abs === 0) return "$0";
+  if (abs < 0.001) return value > 0 ? "<$0.001" : ">-$0.001";
   return `$${value.toFixed(3)}`;
 }
 
@@ -41,11 +43,6 @@ export function logNormalize(value: number, max: number) {
   return Math.min(1, Math.log10(value + 1) / Math.log10(max + 1));
 }
 
-export function logHeatLevel(value: number, max: number) {
-  return Math.max(0, Math.min(5, Math.ceil(logNormalize(value, max) * 5)));
-}
-
-import { type Palette, defaultPalette } from "./themes";
 
 /** Share of fresh tokens at which a cell reads as fully "fresh" coloured. */
 export const FRESH_FULL_SHARE = 0.25;
@@ -63,10 +60,24 @@ export function heatStyle(total: number, fresh: number, max: number, palette: Pa
   return { background: heatColor(total, fresh, max, palette) };
 }
 
+/**
+ * Average burn per calendar day over the 7 days ending on rows[index].date.
+ * Rows exist only for active days, so idle days count as zero rather than being
+ * skipped; averaging the last 7 rows would stretch the window across weeks.
+ * Near the start of the data the divisor shrinks to the days actually covered.
+ * `rows` must be sorted by date.
+ */
 export function movingAverage7(rows: BurnRow[], index: number) {
-  const start = Math.max(0, index - 6);
-  const windowRows = rows.slice(start, index + 1);
-  return sumTokens(windowRows) / windowRows.length;
+  if (index < 0 || index >= rows.length) return 0;
+  const end = toUtcDate(rows[index].date);
+  const start = new Date(end);
+  start.setUTCDate(start.getUTCDate() - 6);
+  const first = toUtcDate(rows[0].date);
+  const from = first > start ? first : start;
+  const days = Math.round((end.getTime() - from.getTime()) / 86_400_000) + 1;
+  let sum = 0;
+  for (let i = index; i >= 0 && toUtcDate(rows[i].date) >= from; i -= 1) sum += rows[i].total;
+  return sum / days;
 }
 
 export type WeekTotal = { week: string; total: number; fresh: number; cached: number; days: number };

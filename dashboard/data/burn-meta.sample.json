@@ -1,0 +1,50 @@
+{
+  "builtAt": "2026-11-11T03:00:00.000Z",
+  "lanes": [
+    {
+      "key": "local",
+      "label": "Local logs",
+      "detail": "Claude Code and Codex",
+      "kind": "auto",
+      "refreshedAt": "2026-11-11T02:00:00.000Z",
+      "lastDataDay": "2026-11-10",
+      "staleAfterHours": 48
+    },
+    {
+      "key": "console",
+      "label": "Anthropic Console",
+      "detail": "billed tokens and cost",
+      "kind": "auto",
+      "refreshedAt": "2026-11-11T01:00:00.000Z",
+      "lastDataDay": "2026-11-10",
+      "staleAfterHours": 48
+    },
+    {
+      "key": "openai",
+      "label": "OpenAI export",
+      "detail": "manual CSV import",
+      "kind": "manual",
+      "refreshedAt": "2026-11-10T20:00:00.000Z",
+      "lastDataDay": "2026-11-10",
+      "staleAfterHours": 840
+    },
+    {
+      "key": "ollama",
+      "label": "Ollama logs",
+      "detail": "local models",
+      "kind": "auto",
+      "refreshedAt": "2026-11-11T03:00:00.000Z",
+      "lastDataDay": "2026-11-10",
+      "staleAfterHours": 48
+    },
+    {
+      "key": "plan",
+      "label": "Claude plan meter",
+      "detail": "desktop app samples",
+      "kind": "auto",
+      "refreshedAt": "2026-11-11T02:00:00.000Z",
+      "lastDataDay": "2026-11-10",
+      "staleAfterHours": 48
+    }
+  ]
+}

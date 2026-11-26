@@ -9,8 +9,9 @@ tsconfig.tsbuildinfo
 # Nothing under here is ever published.
 data/private/
 
-# Your own generated dashboard data. The committed daily-burn.json is a synthetic
-# sample so a fresh clone builds and renders; running `npm run data` overwrites it
-# with your real numbers, which should not be pushed back.
-# Delete this line if you intend to publish your own figures.
+# Your own generated dashboard data. The committed *.sample.json files are
+# synthetic so a fresh clone builds and renders; `npm run data` writes your real
+# numbers and lane freshness here, which should not be pushed back.
+# Delete these lines if you intend to publish your own figures.
 data/daily-burn.json
+data/burn-meta.json

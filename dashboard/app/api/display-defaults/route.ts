@@ -11,6 +11,7 @@
  */
 import fs from "node:fs/promises";
 import path from "node:path";
+import { isLoopback, notFound } from "../../../lib/server/local-only";
 
 export const dynamic = "force-dynamic";
 
@@ -22,17 +23,12 @@ const ALLOWED_KEYS = [
   "panelFigureScale",
   "density",
   "palette",
-  "barCollapsed",
   "compact",
 ] as const;
 
-function isLoopback(request: Request) {
-  const host = (request.headers.get("host") || "").split(":")[0].toLowerCase();
-  return host === "localhost" || host === "127.0.0.1" || host === "[::1]" || host === "::1";
-}
 
 export async function GET(request: Request) {
-  if (!isLoopback(request)) return new Response("Not found", { status: 404 });
+  if (!isLoopback(request)) return notFound();
   try {
     return new Response(await fs.readFile(FILE, "utf8"), {
       headers: { "content-type": "application/json", "cache-control": "no-store" },
@@ -43,7 +39,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  if (!isLoopback(request)) return new Response("Not found", { status: 404 });
+  if (!isLoopback(request)) return notFound();
   const body = (await request.json().catch(() => ({}))) as Record<string, unknown>;
 
   // Whitelist and type-check: this file is imported by the page, so a malformed
@@ -53,7 +49,7 @@ export async function POST(request: Request) {
     const value = body[key];
     if (key === "palette") {
       if (typeof value === "string" && /^[a-z0-9-]{1,32}$/.test(value)) next[key] = value;
-    } else if (key === "barCollapsed" || key === "compact") {
+    } else if (key === "compact") {
       if (typeof value === "boolean") next[key] = value;
     } else if (typeof value === "number" && Number.isFinite(value) && value >= 0.2 && value <= 2) {
       next[key] = Math.round(value * 100) / 100;
