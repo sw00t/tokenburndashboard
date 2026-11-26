@@ -2,12 +2,18 @@
 /**
  * build-rows.mjs
  *
- * Merges data/private/exact-daily.json (from extract-exact.mjs),
- * data/private/console-daily.json (from fetch-console.mjs) and
- * data/private/estimates.json (hand-maintained) into the public, scrubbed
- * data/daily-burn.json that the dashboard imports.
+ * Merges the private inputs into the two public files the dashboard imports:
+ *   data/private/exact-daily.json       (extract-exact.mjs)        local Codex and Claude Code
+ *   data/private/console-daily.json     (fetch-console.mjs)        Anthropic billed tokens and cost
+ *   data/private/openai-daily.json      (import-openai.mjs)        OpenAI API export
+ *   data/private/plan-usage-daily.json  (extract-plan-usage.mjs)   Claude plan meter
+ *   data/private/ollama-daily.json      (extract-ollama.mjs)       local models run through Ollama
+ *   data/private/estimates.json         (hand-maintained)          chat estimates, drivers, evidence
+ * ->
+ *   data/daily-burn.json   one scrubbed row per day
+ *   data/burn-meta.json    per-lane freshness (see the bottom of this file)
  *
- * Public row shape (base contract plus labeled extras):
+ * Public row shape (starter contract plus a few labeled extras):
  *   date, codex_tokens, claude_code_tokens, claude_code_calls,
  *   claude_chat_est, chatgpt_est, total, driver, evidence,
  *   codex_cached, claude_code_cached          <- cache-read subset of the exact columns
@@ -17,31 +23,35 @@
  *   console_fidelity                           <- billed | none
  *   openai_api_tokens, openai_api_cached       <- OpenAI platform export (import-openai.mjs), UTC days
  *   openai_api_requests, openai_api_usd, openai_api_models, openai_api_fidelity <- billed | none
- *   codex_models, claude_code_models          <- per-model split of the local (exact) lanes
+ *   codex_models, claude_code_models          <- per-model split of the local lanes
+ *   local_model_tokens, local_model_requests   <- models run on this machine (extract-ollama.mjs)
+ *   local_model_models, local_model_fidelity   <- keyed "<runner>:<model>", e.g. "ollama:llama3.2:3b" (runner = text before the first colon); exact | none
  *   claude_plan_5h_pct, claude_plan_7d_pct    <- subscription meter peaks per day (extract-plan-usage.mjs)
  *   cost_usd, cost_cached_usd, cost_fidelity   <- real money, from the cost endpoint
  *   billed_claude_code_tokens                  <- reconciliation only, never summed into total
+ *   anthropic_billed_tokens                    <- raw Console meter (overlap included), the denominator for cost per token
  */
 import fs from "node:fs";
 import path from "node:path";
 
+import { readJsonIfExists } from "./lib/common.mjs";
+
 const root = process.cwd();
-const exactPath = path.join(root, "data/private/exact-daily.json");
-const estPath = path.join(root, "data/private/estimates.json");
-const consolePath = path.join(root, "data/private/console-daily.json");
-const openaiPath = path.join(root, "data/private/openai-daily.json");
-const planPath = path.join(root, "data/private/plan-usage-daily.json");
-const outPath = path.join(root, "data/daily-burn.json");
+const privateFile = (name) => path.join(root, "data/private", name);
 
-const exact = JSON.parse(fs.readFileSync(exactPath, "utf8"));
-const est = fs.existsSync(estPath) ? JSON.parse(fs.readFileSync(estPath, "utf8")) : { sources: {}, days: {} };
-const console_ = fs.existsSync(consolePath) ? JSON.parse(fs.readFileSync(consolePath, "utf8")) : null;
-const openai = fs.existsSync(openaiPath) ? JSON.parse(fs.readFileSync(openaiPath, "utf8")) : null;
-const openaiByDate = new Map((openai?.days || []).map((d) => [d.date, d]));
-const plan = fs.existsSync(planPath) ? JSON.parse(fs.readFileSync(planPath, "utf8")) : null;
-const planByDate = new Map((plan?.days || []).map((d) => [d.date, d]));
+const exact = JSON.parse(fs.readFileSync(privateFile("exact-daily.json"), "utf8"));
+const est = readJsonIfExists(privateFile("estimates.json"), { sources: {}, days: {} });
+const console_ = readJsonIfExists(privateFile("console-daily.json"));
+const openai = readJsonIfExists(privateFile("openai-daily.json"));
+const plan = readJsonIfExists(privateFile("plan-usage-daily.json"));
+const ollama = readJsonIfExists(privateFile("ollama-daily.json"));
 
-const consoleByDate = new Map((console_?.days || []).map((d) => [d.date, d]));
+const byDate = (days) => new Map((days || []).map((d) => [d.date, d]));
+const exactByDate = byDate(exact.days);
+const consoleByDate = byDate(console_?.days);
+const openaiByDate = byDate(openai?.days);
+const planByDate = byDate(plan?.days);
+const ollamaByDate = byDate(ollama?.days);
 /**
  * Does Console-metered usage overlap the local Claude Code logs?
  * Only when Claude Code is billed as an API customer. On a Pro/Max/Team
@@ -50,12 +60,12 @@ const consoleByDate = new Map((console_?.days || []).map((d) => [d.date, d]));
  */
 const claudeCodeIsBilled = (console_?.claudeCodeCustomerTypes || []).includes("api");
 
-const exactByDate = new Map(exact.days.map((d) => [d.date, d]));
 const dates = new Set([
   ...exactByDate.keys(),
   ...Object.keys(est.days || {}),
   ...consoleByDate.keys(),
   ...openaiByDate.keys(),
+  ...ollamaByDate.keys(),
 ]);
 
 function ruleFor(date) {
@@ -77,7 +87,8 @@ function normalizeSplit(split) {
 function dominant(split) {
   return Object.entries(split).sort((a, b) => b[1] - a[1])[0][0];
 }
-function chatEstimate(sourceKey, date, active, dayOverride) {
+/** A per-day override wins; otherwise the source's active/idle rate, or 0 if the source is excluded. */
+function chatEstimate(sourceKey, active, dayOverride) {
   if (typeof dayOverride === "number") return dayOverride;
   const src = est.sources?.[sourceKey];
   if (!src || !src.include) return 0;
@@ -91,7 +102,8 @@ function scrub(text) {
   return text;
 }
 
-const round = (n) => Math.round(n);
+/** Cents in, dollars out, kept to 4 decimals. */
+const usd4 = (cents) => Math.round(cents * 100) / 10000;
 const rows = [];
 for (const date of [...dates].sort()) {
   const ex = exactByDate.get(date);
@@ -147,10 +159,23 @@ for (const date of [...dates].sort()) {
   const openaiCached = Math.min(openaiTokens, oa?.cached || 0);
   const openaiUsd = oa?.cost_usd || 0;
 
-  const active = codex + cc + consoleTokens + openaiTokens > 0;
-  const claudeChat = chatEstimate("claude_chat", date, active, day.claude_chat_est);
-  const chatgpt = chatEstimate("chatgpt", date, active, day.chatgpt_est);
-  const total = codex + cc + consoleTokens + openaiTokens + claudeChat + chatgpt;
+  // ---- Local models (exact) lane -----------------------------------------
+  // Runner-reported counts for models on this machine; free, so no money.
+  // Model keys carry the runner before the first colon ("ollama:llama3.2:3b") so the dashboard
+  // can label them; no slash, so the public file still passes the deploy scrub.
+  const ol = ollamaByDate.get(date);
+  const localTokens = ol?.total || 0;
+  const localModels = Object.fromEntries(Object.entries(ol?.models || {}).map(([m, v]) => [`ollama:${m}`, v.total]));
+
+  // "Active" means you were at the keyboard: Codex or Claude Code sessions. The
+  // API lanes are left out on purpose, because a scheduled job calling the API
+  // says nothing about whether you also chatted that day. Counting them once put
+  // 120K of estimated chat on every day a weekly background job ran. Local
+  // models are left out for the same reason: scripts call them too.
+  const active = codex + cc > 0;
+  const claudeChat = chatEstimate("claude_chat", active, day.claude_chat_est);
+  const chatgpt = chatEstimate("chatgpt", active, day.chatgpt_est);
+  const total = codex + cc + consoleTokens + openaiTokens + localTokens + claudeChat + chatgpt;
   if (total === 0 && costCents === 0 && openaiUsd === 0) continue;
   rows.push({
     date,
@@ -161,6 +186,8 @@ for (const date of [...dates].sort()) {
     chatgpt_est: chatgpt,
     console_tokens: consoleTokens,
     openai_api_tokens: openaiTokens,
+    local_model_tokens: localTokens,
+    local_model_requests: ol?.requests || 0,
     total,
     driver: driverLabel,
     ...(driverSplit ? { driver_split: driverSplit } : {}),
@@ -171,14 +198,22 @@ for (const date of [...dates].sort()) {
     openai_api_cached: openaiCached,
     openai_api_requests: oa?.requests || 0,
     openai_api_usd: openaiUsd,
-    cost_usd: round(costCents) / 100,
-    cost_cached_usd: round(cachedCostCents) / 100,
+    // Four decimals of a dollar. Rounding each day to whole cents before summing
+    // drifted the window total (a $0.7586 bill once showed as $0.79); the UI rounds
+    // for display only.
+    cost_usd: usd4(costCents),
+    cost_cached_usd: usd4(cachedCostCents),
     billed_claude_code_tokens: billedClaudeCodeTokens,
-    codex_fidelity: codex ? "exact" : "none",
+    // Everything Anthropic metered that day, overlap included: the tokens cost_usd
+    // actually paid for. Never summed into total (console_tokens + claude_code do that).
+    anthropic_billed_tokens: billedTotal,
+    codex_fidelity: codex ? ex.codex.fidelity || "exact" : "none",
     claude_code_fidelity: cc ? ex.claude_code.fidelity : "none",
     chat_fidelity: claudeChat + chatgpt > 0 ? "estimated" : "none",
     console_fidelity: consoleTokens ? "billed" : "none",
     openai_api_fidelity: openaiTokens ? "billed" : "none",
+    local_model_fidelity: localTokens ? "exact" : "none",
+    ...(Object.keys(localModels).length ? { local_model_models: localModels } : {}),
     // Claude subscription rate-limit meters, peak percent per local day (measured, not tokens).
     ...(pl ? { claude_plan_5h_pct: pl.five_hour_pct, claude_plan_7d_pct: pl.seven_day_pct } : {}),
     ...(oa?.models && Object.keys(oa.models).length ? { openai_api_models: oa.models } : {}),
@@ -189,12 +224,84 @@ for (const date of [...dates].sort()) {
   });
 }
 
-fs.writeFileSync(outPath, JSON.stringify(rows, null, 1).replace(/\n\s+"/g, ' "').replace(/\n\s*}/g, " }") + "\n");
+// One row per line: pretty-print, then fold each row's fields onto its line.
+fs.writeFileSync(path.join(root, "data/daily-burn.json"), JSON.stringify(rows, null, 1).replace(/\n\s+"/g, ' "').replace(/\n\s*}/g, " }") + "\n");
+
+/**
+ * Freshness per lane, published beside the rows (data/burn-meta.json). The
+ * dashboard flags a lane whose source has not been re-read recently, because a
+ * stale lane looks exactly like a quiet one: the local logs once sat seven weeks
+ * unrefreshed while the page looked current. Dates and timestamps only, so this
+ * file passes the same deploy scrub as daily-burn.json.
+ *   refreshedAt      when that source was last read (not when it last had usage)
+ *   lastDataDay      newest day the lane has any tokens
+ *   staleAfterHours  age at which the UI warns; manual exports get a longer leash
+ */
+const lastDay = (list, has) => list.filter(has).map((d) => d.date).sort().at(-1) || null;
+const lanes = [
+  {
+    key: "local",
+    label: "Local logs",
+    detail: "Claude Code and Codex",
+    kind: "auto",
+    refreshedAt: exact.generatedAt || null,
+    lastDataDay: lastDay(exact.days, (d) => (d.codex?.total || 0) + (d.claude_code?.total || 0) > 0),
+    staleAfterHours: 48,
+  },
+];
+if (console_?.configured) {
+  lanes.push({
+    key: "console",
+    label: "Anthropic Console",
+    detail: "billed tokens and cost",
+    kind: "auto",
+    refreshedAt: console_.generatedAt || null,
+    lastDataDay: lastDay(console_.days, (d) => (d.usage_total || 0) > 0 || (d.cost?.cents || 0) > 0),
+    staleAfterHours: 48,
+  });
+}
+if (openai) {
+  lanes.push({
+    key: "openai",
+    label: "OpenAI export",
+    detail: "manual CSV import",
+    kind: "manual",
+    refreshedAt: openai.generatedAt || null,
+    lastDataDay: lastDay(openai.days, (d) => (d.total || 0) > 0 || (d.cost_usd || 0) > 0),
+    staleAfterHours: 24 * 35,
+  });
+}
+if (ollama?.available) {
+  lanes.push({
+    key: "ollama",
+    label: "Ollama logs",
+    detail: "local models",
+    kind: "auto",
+    refreshedAt: ollama.generatedAt || null,
+    lastDataDay: lastDay(ollama.days, (d) => (d.total || 0) > 0),
+    staleAfterHours: 48,
+  });
+}
+if (plan?.available) {
+  lanes.push({
+    key: "plan",
+    label: "Claude plan meter",
+    detail: "desktop app samples",
+    kind: "auto",
+    refreshedAt: plan.generatedAt || null,
+    lastDataDay: lastDay(plan.days, () => true),
+    staleAfterHours: 48,
+  });
+}
+fs.writeFileSync(path.join(root, "data/burn-meta.json"), JSON.stringify({ builtAt: new Date().toISOString(), lanes }, null, 2) + "\n");
+
+// ---------- Summary ----------
 const sum = (k) => rows.reduce((s, r) => s + r[k], 0);
+const countBy = (k) => rows.reduce((acc, r) => ({ ...acc, [r[k]]: (acc[r[k]] || 0) + 1 }), {});
 console.log(`Wrote data/daily-burn.json: ${rows.length} rows, ${rows[0]?.date} -> ${rows.at(-1)?.date}`);
-console.log(`codex ${sum("codex_tokens").toLocaleString()} | claude_code ${sum("claude_code_tokens").toLocaleString()} | console ${sum("console_tokens").toLocaleString()} | openai_api ${sum("openai_api_tokens").toLocaleString()} | claude_chat_est ${sum("claude_chat_est").toLocaleString()} | chatgpt_est ${sum("chatgpt_est").toLocaleString()} | total ${sum("total").toLocaleString()}`);
-const fid = {}; for (const r of rows) fid[r.claude_code_fidelity] = (fid[r.claude_code_fidelity] || 0) + 1;
-console.log("claude_code fidelity by day:", fid);
+console.log(`codex ${sum("codex_tokens").toLocaleString()} | claude_code ${sum("claude_code_tokens").toLocaleString()} | console ${sum("console_tokens").toLocaleString()} | openai_api ${sum("openai_api_tokens").toLocaleString()} | local_models ${sum("local_model_tokens").toLocaleString()} | claude_chat_est ${sum("claude_chat_est").toLocaleString()} | chatgpt_est ${sum("chatgpt_est").toLocaleString()} | total ${sum("total").toLocaleString()}`);
+console.log("claude_code fidelity by day:", countBy("claude_code_fidelity"));
+console.log("codex fidelity by day:", countBy("codex_fidelity"));
 console.log("drivers:", [...new Set(rows.map((r) => r.driver))].join(", "));
 
 if (openai) {

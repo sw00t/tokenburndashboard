@@ -2,7 +2,7 @@
  * Console sync control plane.
  *
  * GET  -> status: schedule, last pull, whether a credential exists, freshness.
- * POST -> { action: "pull" }              run fetch-console.mjs + build-rows.mjs
+ * POST -> { action: "pull" }              run local extraction, fetch-console.mjs, then build-rows.mjs
  *         { action: "schedule", everyHours: number | null }
  *         { action: "pull-full" }         backfill instead of the incremental tail
  *
@@ -17,6 +17,8 @@ import { execFile } from "node:child_process";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
+
+import { isLoopback, notFound } from "../../../lib/server/local-only";
 
 const run = promisify(execFile);
 
@@ -48,10 +50,6 @@ let inFlight: Promise<PullResult> | null = null;
 
 type PullResult = { ok: boolean; message: string; log: string };
 
-function isLoopback(request: Request) {
-  const host = (request.headers.get("host") || "").split(":")[0].toLowerCase();
-  return host === "localhost" || host === "127.0.0.1" || host === "[::1]" || host === "::1";
-}
 
 async function readJson<T>(file: string, fallback: T): Promise<T> {
   try {
@@ -150,9 +148,39 @@ async function status() {
   };
 }
 
+/**
+ * Local-log extraction runs first, so a pull refreshes every lane, not only the
+ * Console one. (A Console-only pull is how the local lanes once went seven weeks
+ * stale while the dashboard looked current.) extract-exact.mjs merges with its
+ * own history, so running it often is safe. A local failure is reported but does
+ * not block the Console pull.
+ */
+const LOCAL_STEPS = ["scripts/extract-exact.mjs", "scripts/extract-plan-usage.mjs", "scripts/extract-ollama.mjs"];
+
+async function pullLocal(): Promise<{ log: string; note: string }> {
+  let log = "";
+  const problems: string[] = [];
+  for (const script of LOCAL_STEPS) {
+    try {
+      const out = await run(process.execPath, [script], {
+        cwd: ROOT,
+        timeout: 5 * 60_000,
+        maxBuffer: 16 * 1024 * 1024,
+      });
+      log += out.stdout.split("\n").slice(0, 5).join("\n") + out.stderr + "\n";
+    } catch (error) {
+      const err = error as { stdout?: string; stderr?: string; message?: string };
+      log += (err.stderr || err.message || "") + "\n";
+      problems.push(path.basename(script));
+    }
+  }
+  return { log, note: problems.length ? `local logs NOT refreshed (${problems.join(", ")} failed)` : "" };
+}
+
 async function pull(full: boolean): Promise<PullResult> {
   const fetchArgs = ["scripts/fetch-console.mjs", ...(full ? ["--full"] : [])];
-  let log = "";
+  const local = await pullLocal();
+  let log = local.log;
   try {
     const fetched = await run(process.execPath, fetchArgs, {
       cwd: ROOT,
@@ -172,7 +200,8 @@ async function pull(full: boolean): Promise<PullResult> {
         .find((line) => line.startsWith("console:")) ||
       built.stdout.split("\n").find((line) => line.startsWith("Wrote")) ||
       "Pull complete.";
-    return { ok: true, message: summary.trim(), log: safeLog(log) };
+    const message = local.note ? `${local.note}; ${summary.trim()}` : summary.trim();
+    return { ok: !local.note, message, log: safeLog(log) };
   } catch (error) {
     const err = error as { stdout?: string; stderr?: string; message?: string };
     log += (err.stdout || "") + (err.stderr || "") + (err.message || "");
@@ -206,12 +235,12 @@ async function startPull(full: boolean) {
 }
 
 export async function GET(request: Request) {
-  if (!isLoopback(request)) return new Response("Not found", { status: 404 });
+  if (!isLoopback(request)) return notFound();
   return Response.json(await status());
 }
 
 export async function POST(request: Request) {
-  if (!isLoopback(request)) return new Response("Not found", { status: 404 });
+  if (!isLoopback(request)) return notFound();
 
   const body = (await request.json().catch(() => ({}))) as {
     action?: string;

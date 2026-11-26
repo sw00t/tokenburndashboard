@@ -48,13 +48,15 @@ const PROGRESS_MS = 1_500;
  * pulls. Scheduling is evaluated server-side (the route owns `due`), so the page
  * only has to keep asking while it is open. Nothing here ever sees a credential.
  */
-export function useConsoleSync(onRows: (rows: RawBurnRow[]) => void) {
+export function useConsoleSync(onRows: (rows: RawBurnRow[]) => void, onMeta?: (meta: unknown) => void) {
   const [status, setStatus] = useState<ConsoleStatus | null>(null);
   const [busy, setBusy] = useState(false);
   const [unreachable, setUnreachable] = useState(false);
   const busyRef = useRef(false);
   const onRowsRef = useRef(onRows);
   onRowsRef.current = onRows;
+  const onMetaRef = useRef(onMeta);
+  onMetaRef.current = onMeta;
 
   const refreshRows = useCallback(async () => {
     try {
@@ -65,7 +67,19 @@ export function useConsoleSync(onRows: (rows: RawBurnRow[]) => void) {
     } catch {
       /* keep the statically imported rows */
     }
+    // Lane freshness changes with every pull, so it travels with the rows.
+    try {
+      const res = await fetch("/api/burn-meta", { cache: "no-store" });
+      if (res.ok) onMetaRef.current?.(await res.json());
+    } catch {
+      /* keep the statically imported freshness */
+    }
   }, []);
+
+  // Replace the committed sample with this machine's real rows, if any.
+  useEffect(() => {
+    refreshRows();
+  }, [refreshRows]);
 
   const load = useCallback(async () => {
     try {
@@ -135,11 +149,6 @@ export function useConsoleSync(onRows: (rows: RawBurnRow[]) => void) {
       clearInterval(id);
     };
   }, [running, load]);
-
-  // Replace the committed sample with this machine's real rows, if any.
-  useEffect(() => {
-    refreshRows();
-  }, [refreshRows]);
 
   useEffect(() => {
     let cancelled = false;

@@ -1,7 +1,8 @@
 # Token Burn Dashboard
 
 A local dashboard for AI token usage and spend across Codex, Claude Code, Claude
-chat, ChatGPT, the Anthropic Console API and the OpenAI API, on one set of axes.
+chat, ChatGPT, the Anthropic Console API, the OpenAI API and local models run
+through Ollama, on one set of axes.
 Every number is labeled by how much to trust it: **exact**, **billed**,
 **derived** or **estimated**.
 
@@ -16,7 +17,7 @@ involved never touches the repo.
   <img src="preview/dashboard-preview-mobile-settings.png" width="280" alt="Phone settings sheet: Console sync, appearance, and pause">
 </p>
 
-> The preview and `dashboard/data/daily-burn.sample.json` are fictional, generated
+> The preview images and `dashboard/data/*.sample.json` are fictional, generated
 > data, so a fresh clone has something to render.
 
 ## Quick start
@@ -34,14 +35,19 @@ cp data/estimates.example.json data/private/estimates.json   # then edit it
 npm run data                                                  # extract, fetch, merge
 ```
 
-`npm run data` writes `data/daily-burn.json`, which is gitignored so your real
-figures can't be committed by accident.
+`npm run data` writes `data/daily-burn.json` and `data/burn-meta.json` (lane freshness),
+both gitignored so your real figures can't be committed by accident. The page builds
+from the samples and swaps in your real files on load.
 
 ## Layout
 
 - **Desktop:** the title row carries an **i** button (what the numbers mean and how much to
-  trust each label) and **Pause**. Range, sources, and fidelity toggles sit in one or two thin
-  rows, and Appearance starts collapsed, so the figures and charts are in view on load.
+  trust each label), a settings button (Console sync and Appearance), and **Pause**. Below it,
+  the range (3M / 6M / 1Y / All) sits left and one chip per source sits right, each marked
+  with its provider's logo in its trust-tier colour; the tier itself shows on hover. A slim
+  **Data as of** row shows how fresh each lane is and flags stale ones, then the heatmap and
+  weekly trend (hover a week for its figures) lead the page. Panel notes sit behind their
+  own **i**, and the Models list, Method, and day table expand from a slim bottom row.
 - **Phone (600px and below):** range, Sources, **i**, and a settings button stay pinned while
   you scroll. The heatmap turns into one row per week, newest first, with a bar for each
   week's total. Charts come before the billed block, panel notes sit behind their own **i**,
@@ -61,7 +67,9 @@ Run from `dashboard/`:
 | `npm run data:console:full` | Re-pull 180 days of Anthropic usage (slow) |
 | `npm run data:console:check` | Check what the stored admin key can reach, fetch nothing |
 | `npm run data:openai -- DIR` | Import OpenAI usage/cost export CSVs from `DIR` |
+| `npm run data:ollama` | Read Ollama's server logs, then rebuild the rows |
 | `npm run data:build` | Merge private inputs into `data/daily-burn.json` |
+| `npm run typecheck` | TypeScript check (Next 16 has no `next lint`) |
 
 ## Sources
 
@@ -71,11 +79,14 @@ Run from `dashboard/`:
   `ANTHROPIC_ADMIN_KEY` elsewhere). See [docs/console-sync.md](docs/console-sync.md).
 - **OpenAI API:** billed, from the platform's Usage export CSVs. API-key traffic only, UTC days.
 - **Claude plan limits:** peak 5-hour and 7-day usage percent, from the desktop app's local history.
+- **Local models (Ollama):** exact, from Ollama's server logs (`~/.ollama/logs`), per model.
 - **Claude chat, ChatGPT:** estimated, from your own figures in `data/private/estimates.json`.
 
-Days bucket in your system timezone; override with `BURN_TZ`.
+The extractors merge each run with their previous output, so a day survives after
+Codex, Claude Code, or Ollama prune or rotate its logs. Codex days pruned before the
+first run are rebuilt from Codex's own session database and labeled **derived**.
 
-**Coming soon:** lanes for local LLMs and Decision models.
+Days bucket in your system timezone; override with `BURN_TZ`.
 
 ## Docs
 
@@ -86,6 +97,7 @@ Days bucket in your system timezone; override with `BURN_TZ`.
 | [docs/console-sync.md](docs/console-sync.md) | Admin API setup, credentials, rate limits |
 | [docs/privacy.md](docs/privacy.md) | What is safe to publish |
 | [docs/private-data.md](docs/private-data.md) | What lives in `data/private/` |
+| [dashboard/README.md](dashboard/README.md) | Merge rules, freshness, display controls, the Ollama lane, code layout |
 
 Requires Node 20+.
 

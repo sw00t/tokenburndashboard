@@ -32,11 +32,12 @@
  *
  * USAGE
  *   node scripts/fetch-console.mjs --check         # probe permissions, fetch nothing
- *   node scripts/fetch-console.mjs                 # incremental: last 14 days
+ *   node scripts/fetch-console.mjs                 # resume from the last fully fetched day (14 days on a first run)
  *   node scripts/fetch-console.mjs --days 45       # re-pull a longer tail
  *   node scripts/fetch-console.mjs --since 2026-02-01
  *   node scripts/fetch-console.mjs --full          # everything since --since or 180d
  *   node scripts/fetch-console.mjs --no-claude-code
+ *   node scripts/fetch-console.mjs --build         # then run build-rows.mjs (what the npm scripts use)
  *
  * Exits 0 with a "not configured" marker when no credential is present, so
  * `npm run data` still works on a machine that has never set this up.
@@ -44,10 +45,10 @@
 import fs from "node:fs";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
 
-const TZ = process.env.BURN_TZ
-  || Intl.DateTimeFormat().resolvedOptions().timeZone
-  || "UTC";
+import { TZ, addDays, localDay } from "./lib/common.mjs";
+
 const OUT = path.resolve(process.cwd(), "data/private/console-daily.json");
 const PROGRESS = path.resolve(process.cwd(), "data/private/console-progress.json");
 const BASE = "https://api.anthropic.com/v1/organizations";
@@ -65,17 +66,8 @@ const value = (name, fallback) => {
   return i >= 0 && args[i + 1] ? args[i + 1] : fallback;
 };
 
-const dayFmt = new Intl.DateTimeFormat("en-CA", {
-  timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit",
-});
-const localDay = (iso) => dayFmt.format(new Date(iso));
 const utcDay = (iso) => iso.slice(0, 10);
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-const addDays = (date, n) => {
-  const d = new Date(`${date}T00:00:00Z`);
-  d.setUTCDate(d.getUTCDate() + n);
-  return d.toISOString().slice(0, 10);
-};
 const today = () => new Date().toISOString().slice(0, 10);
 
 // ---------------------------------------------------------------- credentials
@@ -179,6 +171,7 @@ function notConfigured(reason) {
   fs.writeFileSync(OUT, JSON.stringify(payload, null, 2));
   console.log(`Console sync not configured (${reason}).`);
   console.log(`Store an Admin API key, then re-run:\n  ${payload.setupHint}`);
+  buildIfAsked();
   process.exit(0);
 }
 
@@ -664,29 +657,52 @@ async function main() {
    * An explicit --since or --days always wins; --full ignores the cache.
    */
   const RECHECK_DAYS = Number(value("recheck", 3));
+  const MAX_LOOKBACK_DAYS = 180;
+  /** Newest local day with billed activity. Display only: quiet days leave no row. */
   const cachedThrough = previous?.configured && previous.days?.length
     ? previous.days[previous.days.length - 1].date
+    : null;
+  /**
+   * Exclusive end of the contiguous range the cache has fully fetched. Resume
+   * starts here, not at the newest active day: a quiet stretch has no rows, and
+   * keying off activity (plus the old 30-day floor) silently skipped whole weeks.
+   * Files written before this field existed fall back to their window end when
+   * that run was clean, else to the newest stored day.
+   */
+  const prevCovered = previous?.configured
+    ? previous.coveredThrough
+      || (previous.window?.to && !(previous.warnings || []).length ? previous.window.to : cachedThrough)
     : null;
   const explicitSince = args.includes("--since") || args.includes("--days");
 
   let from;
   let mode;
   if (flag("full")) {
-    from = value("since", addDays(today(), -180));
+    from = value("since", addDays(today(), -MAX_LOOKBACK_DAYS));
     mode = "full";
   } else if (explicitSince) {
     from = value("since", addDays(today(), -Number(value("days", 14))));
     mode = "explicit";
-  } else if (cachedThrough) {
-    // Resume just behind the cache, but never crawl more than 30 days at once.
-    const resume = addDays(cachedThrough, -RECHECK_DAYS);
-    const floor = addDays(today(), -30);
-    from = resume > floor ? resume : floor;
+  } else if (prevCovered) {
+    from = addDays(prevCovered, -RECHECK_DAYS);
     mode = "resume";
   } else {
     from = addDays(today(), -14);
     mode = "first-run";
   }
+  const floor = addDays(today(), -MAX_LOOKBACK_DAYS);
+  if (mode === "resume" && from < floor) {
+    console.log(`  cache is older than ${MAX_LOOKBACK_DAYS} days; resuming from ${floor}. Days before that stay as stored.`);
+    from = floor;
+  }
+  /**
+   * The API buckets on UTC days but rows are local days. A request starting at
+   * UTC midnight of `from` catches only part of local day from-1 (west of UTC),
+   * which used to be stored beside the full copy carried from the last run. So
+   * fetch one UTC day early, then keep only local days >= from: every kept day is
+   * complete, and every carried day is < from, so the two never overlap.
+   */
+  const fetchFrom = addDays(from, -1);
 
   const cachedDayCount = previous?.days?.length || 0;
   console.log(`Console sync ${from} -> ${end}  (${mode}, credential: ${cred.sourceLabel}, tz ${TZ})`);
@@ -698,7 +714,7 @@ async function main() {
     running: true,
     phase: "starting",
     done: 0,
-    total: planRequests(from, end, !flag("no-claude-code")),
+    total: planRequests(fetchFrom, end, !flag("no-claude-code")),
     startedAt: new Date().toISOString(),
     mode,
   });
@@ -710,10 +726,10 @@ async function main() {
   const warnings = [];
   let authProblem = null;
   try {
-    await fetchUsage(from, end, cred);
-    await fetchCost(from, end, cred);
+    await fetchUsage(fetchFrom, end, cred);
+    await fetchCost(fetchFrom, end, cred);
     if (!flag("no-claude-code")) {
-      const found = await fetchClaudeCode(from, end, cred);
+      const found = await fetchClaudeCode(fetchFrom, end, cred);
       if (found.length) customerTypes = found;
     }
   } catch (error) {
@@ -724,21 +740,34 @@ async function main() {
   }
 
   /**
-   * A run that failed partway must never regress the cache. Days inside the
-   * refetch window that we did not reach keep their previously stored values;
-   * on a clean run, absence is authoritative and stale days are dropped.
+   * A run that failed partway must never regress the cache. Its rows may hold
+   * usage without cost, or a window cut short, so every previously stored day is
+   * kept as it was and only days the cache did not have are added. On a clean
+   * run, absence inside the window is authoritative and stale days are dropped.
    */
-  const fetched = assemble();
-  let rows = [...carried, ...fetched];
+  const fetched = assemble().filter((d) => d.date >= from && d.date < end);
+  let rows;
   if (warnings.length > 0) {
-    const seen = new Set(rows.map((d) => d.date));
-    const rescued = (previous?.days || []).filter((d) => !seen.has(d.date));
-    if (rescued.length) {
-      console.log(`  pull incomplete: keeping ${rescued.length} previously cached day(s) rather than dropping them`);
-      rows = [...rows, ...rescued];
-    }
+    const stored = previous?.days || [];
+    const storedDates = new Set(stored.map((d) => d.date));
+    const added = fetched.filter((d) => !storedDates.has(d.date));
+    console.log(`  pull incomplete: kept all ${stored.length} stored day(s) unchanged, added ${added.length} new day(s)`);
+    rows = [...stored, ...added];
+  } else {
+    rows = [...carried, ...fetched];
   }
-  rows.sort((a, b) => a.date.localeCompare(b.date));
+  const beforeDedupe = rows.length;
+  rows = dedupeByDate(rows);
+  if (rows.length < beforeDedupe) {
+    console.log(`  removed ${beforeDedupe - rows.length} duplicate day(s) left by earlier runs (kept the most complete copy)`);
+  }
+
+  // Coverage only advances on a clean run that reached back to (or before) the
+  // old coverage edge; a later --since must not paper over an unfetched gap.
+  const contiguous = !prevCovered || mode === "full" || from <= prevCovered;
+  const coveredThrough = warnings.length === 0 && contiguous
+    ? [end, prevCovered || end].sort().at(-1)
+    : prevCovered;
 
   const out = {
     configured: true,
@@ -747,7 +776,9 @@ async function main() {
     keySource: cred.sourceLabel,
     credentialKind: cred.kind,
     credentialLabel: KIND_LABEL[cred.kind],
-    window: { from, to: end, mode, cachedThrough, reusedDays: mode === "resume" ? cachedDayCount : 0 },
+    window: { from, fetchedFrom: fetchFrom, to: end, mode, cachedThrough, reusedDays: mode === "resume" ? cachedDayCount : 0 },
+    /** Exclusive end of the range fully fetched with no gaps. The next resume starts here. */
+    coveredThrough,
     requestCount,
     warnings,
     /** Set when the credential authenticated but was refused. Drives the UI's fix-it panel. */
@@ -788,6 +819,36 @@ async function main() {
       "is not metered by these endpoints. The dashboard will keep showing local-log columns.",
     );
   }
+  buildIfAsked();
+}
+
+/**
+ * One row per local day. Earlier versions could store a day twice (a full copy
+ * and a partial one from the UTC boundary); keep the most complete copy: more
+ * tokens, then more UTC days drawn from, then more cost.
+ */
+function dedupeByDate(rows) {
+  const completeness = (d) => [d.usage_total || 0, (d.from_utc_days || []).length, d.cost?.cents || 0];
+  const better = (a, b) => {
+    const [x, y] = [completeness(a), completeness(b)];
+    for (let i = 0; i < x.length; i += 1) if (x[i] !== y[i]) return x[i] > y[i] ? a : b;
+    return a;
+  };
+  const byDate = new Map();
+  for (const d of rows) byDate.set(d.date, byDate.has(d.date) ? better(byDate.get(d.date), d) : d);
+  return [...byDate.values()].sort((a, b) => a.date.localeCompare(b.date));
+}
+
+/**
+ * `--build` runs build-rows.mjs after a successful fetch, so npm scripts can be
+ * written as a single command and `npm run data:console -- --since X` passes its
+ * flags here instead of to build-rows.
+ */
+function buildIfAsked() {
+  if (!flag("build")) return;
+  const script = fileURLToPath(new URL("./build-rows.mjs", import.meta.url));
+  console.log("");
+  execFileSync(process.execPath, [script], { stdio: "inherit" });
 }
 
 function safeRead(file) {
